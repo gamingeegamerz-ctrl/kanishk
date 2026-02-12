@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Advanced Academic Resource Management System</title>
+    
+    <!-- Modern Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 (Premium Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Master Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Premium Animated Background -->
+    <div class="noise"></div>
+    <div class="gradient-bg">
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere-2"></div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Edu<span class="highlight">Vault</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#"><i class="fas fa-book"></i> Courses</a>
+                <a href="#"><i class="fas fa-tasks"></i> Assignments</a>
+                <a href="#" id="hiddenTrigger"><i class="fas fa-shield-alt"></i> Security</a>
+            </div>
+            <div class="user-profile">
+                <div class="avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <span>Scholar_07</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <span class="badge">🎓 Academic Year 2026</span>
+            <h1>Advanced Learning <span class="gradient-text">Command Center</span></h1>
+            <p>Integrated knowledge ecosystem with real-time collaboration capabilities</p>
+            
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-book-open"></i>
+                    <h3>24</h3>
+                    <p>Active Modules</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>156</h3>
+                    <p>Study Hours</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-trophy"></i>
+                    <h3>12</h3>
+                    <p>Achievements</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard">
+        <!-- Progress Overview -->
+        <div class="progress-overview" data-aos="fade-up">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-line"></i> Academic Progress</h2>
+                <span class="semester">Semester VI</span>
+            </div>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <span>Data Structures</span>
+                        <span class="percentage">78%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 78%"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <span>Algorithms</span>
+                        <span class="percentage">82%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 82%"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <span>Database Systems</span>
+                        <span class="percentage">91%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 91%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Grid -->
+        <div class="section-header" data-aos="fade-up">
+            <h2><i class="fas fa-cubes"></i> Current Modules</h2>
+            <div class="header-controls">
+                <span class="filter active">All</span>
+                <span class="filter">Core</span>
+                <span class="filter">Elective</span>
+            </div>
+        </div>
+
+        <div class="course-grid">
+            <!-- Course Card 1 -->
+            <div class="course-card premium" data-aos="fade-up">
+                <div class="card-badge">Core</div>
+                <div class="card-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Advanced Algorithms</h3>
+                <p>Dynamic Programming, Graph Theory, NP-Completeness</p>
+                <div class="card-meta">
+                    <span><i class="fas fa-video"></i> 24 Lectures</span>
+                    <span><i class="fas fa-users"></i> 156 Enrolled</span>
+                </div>
+                <div class="card-footer">
+                    <span class="difficulty advanced">Advanced</span>
+                    <button class="btn-outline">Continue <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Course Card 2 -->
+            <div class="course-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-badge">Core</div>
+                <div class="card-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Distributed Systems</h3>
+                <p>Consensus Algorithms, Replication, Fault Tolerance</p>
+                <div class="card-meta">
+                    <span><i class="fas fa-video"></i> 18 Lectures</span>
+                    <span><i class="fas fa-users"></i> 89 Enrolled</span>
+                </div>
+                <div class="card-footer">
+                    <span class="difficulty intermediate">Intermediate</span>
+                    <button class="btn-outline">Continue <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Course Card 3 - HIDDEN TRIGGER CARD -->
+            <div class="course-card secret-trigger" id="secretPortalTrigger" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-badge security">🔒 Secure Access</div>
+                <div class="card-icon">
+                    <i class="fas fa-shield-haltered"></i>
+                </div>
+                <h3>Research Collab Lab</h3>
+                <p>Advanced collaborative research environment</p>
+                <div class="card-meta">
+                    <span><i class="fas fa-lock"></i> Private Access</span>
+                    <span><i class="fas fa-key"></i> 2 Members</span>
+                </div>
+                <div class="card-footer">
+                    <span class="difficulty special">Restricted</span>
+                    <button class="btn-secret" onclick="window.location.href='secret-chamber.html'">
+                        <i class="fas fa-arrow-right"></i> Access Portal
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Deadlines -->
+        <div class="deadlines-section" data-aos="fade-up">
+            <div class="section-header">
+                <h2><i class="fas fa-calendar"></i> Upcoming Deadlines</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="deadlines-grid">
+                <div class="deadline-card">
+                    <div class="deadline-date">
+                        <span class="day">15</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="deadline-info">
+                        <h4>Algorithm Analysis Assignment</h4>
+                        <p>Submission in 3 days</p>
+                    </div>
+                    <span class="priority high">High</span>
+                </div>
+                <div class="deadline-card">
+                    <div class="deadline-date">
+                        <span class="day">22</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="deadline-info">
+                        <h4>Database Project Phase 2</h4>
+                        <p>Submission in 10 days</p>
+                    </div>
+                    <span class="priority medium">Medium</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Premium Footer with Copyright -->
+    <footer class="premium-footer">
+        <div class="footer-wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+            </svg>
+        </div>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>EduVault</span>
+                    </div>
+                    <p>Advanced academic resource management platform for modern scholars.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <i class="far fa-copyright"></i> 2026 Advanced Academic Systems. All rights reserved.
+                </div>
+                <div class="designer-credit">
+                    Designed with <i class="fas fa-heart" style="color: #ff4d4d;"></i> by 
+                    <span class="designer-name">Kanishk Ghongade</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="app.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+</body>
+</html>

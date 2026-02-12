@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-88">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Research Collaboration Hub</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    
+    <!-- Master Styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Premium Chat Theme */
+        :root {
+            --chat-bg: rgba(15, 15, 25, 0.95);
+            --chat-sidebar: rgba(20, 20, 35, 0.98);
+            --chat-primary: #10b981;
+            --chat-primary-dark: #059669;
+            --message-self: linear-gradient(135deg, #10b981, #059669);
+            --message-other: rgba(255, 255, 255, 0.1);
+            --typing-indicator: #10b981;
+        }
+        
+        body {
+            background: var(--chat-bg);
+            overflow: hidden;
+        }
+        
+        .chat-application {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .chat-sidebar {
+            width: 350px;
+            background: var(--chat-sidebar);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-profile-large {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar-large {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-800));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: white;
+        }
+        
+        .user-info h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .chat-search {
+            padding: 1rem 1.5rem;
+            position: relative;
+        }
+        
+        .chat-search i {
+            position: absolute;
+            left: 2.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-500);
+        }
+        
+        .chat-search input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.95rem;
+        }
+        
+        .chat-search input:focus {
+            outline: none;
+            border-color: var(--chat-primary);
+        }
+        
+        .conversations-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.5rem;
+        }
+        
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 16px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .conversation-item:hover,
+        .conversation-item.active {
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .conversation-avatar {
+            position: relative;
+        }
+        
+        .conversation-avatar i {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .online-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border: 2px solid var(--chat-sidebar);
+            border-radius: 50%;
+        }
+        
+        .conversation-details {
+            flex: 1;
+        }
+        
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+        
+        .conversation-name {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .conversation-time {
+            color: var(--neutral-500);
+            font-size: 0.75rem;
+        }
+        
+        .conversation-preview {
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .unread-badge {
+            background: var(--chat-primary);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 100px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Chat Area */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--chat-bg);
+        }
+        
+        .chat-header {
+            padding: 1.25rem 2rem;
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .chat-user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ec4899, #d946ef);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .chat-user-details h2 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--typing-indicator);
+            font-size: 0.875rem;
+        }
+        
+        .typing-indicator span {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .typing-indicator span i {
+            animation: typingBounce 1.4s infinite;
+        }
+        
+        .typing-indicator span i:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span i:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .chat-header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .chat-header-actions i {
+            color: var(--neutral-400);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .chat-header-actions i:hover {
+            color: var(--chat-primary);
+        }
+        
+        /* Messages Container */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+        }
+        
+        .message-wrapper {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-wrapper.self {
+            justify-content: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 60%;
+            padding: 0.875rem 1.25rem;
+            border-radius: 20px;
+            position: relative;
+            animation: messagePop 0.3s ease;
+        }
+        
+        @keyframes messagePop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .message-wrapper.self .message-bubble {
+            background: var(--message-self);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message-wrapper.other .message-bubble {
+            background: var(--message-other);
+            color: white;
+            border-bottom-left-radius: 4px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .message-sender {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--neutral-400);
+        }
+        
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.375rem;
+            margin-top: 0.25rem;
+            font-size: 0.688rem;
+        }
+        
+        .message-wrapper.self .message-meta {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .message-wrapper.other .message-meta {
+            color: var(--neutral-500);
+        }
+        
+        .message-status {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .message-status i {
+            font-size: 0.75rem;
+        }
+        
+        .message-status i.seen {
+            color: #60a5fa;
+        }
+        
+        /* Message Actions */
+        .message-actions {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--neutral-800);
+            border-radius: 8px;
+            padding: 0.25rem;
+            display: none;
+            gap: 0.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .message-wrapper:hover .message-actions {
+            display: flex;
+        }
+        
+        .message-action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-400);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .message-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .message-action-btn.delete:hover {
+            color: #ef4444;
+        }
+        
+        /* Chat Input Area */
+        .chat-input-area {
+            padding: 1.5rem 2rem;
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-wrapper:focus-within {
+            border-color: var(--chat-primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .input-actions i {
+            color: var(--neutral-500);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .input-actions i:hover {
+            color: var(--chat-primary);
+        }
+        
+        .message-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            max-height: 120px;
+            resize: none;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .message-input:focus {
+            outline: none;
+        }
+        
+        .message-input::placeholder {
+            color: var(--neutral-600);
+        }
+        
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Login Screen */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .login-card {
+            background: rgba(15, 15, 25, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .login-card h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .login-card p {
+            color: var(--neutral-400);
+            margin-bottom: 2rem;
+        }
+        
+        .user-selector {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .user-option {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-option:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            transform: translateY(-5px);
+        }
+        
+        .user-option i {
+            font-size: 2.5rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+        
+        .user-option h3 {
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-option p {
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-sidebar {
+                display: none;
+            }
+            
+            .message-bubble {
+                max-width: 80%;
+            }
+            
+            .login-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Overlay (Hidden by default) -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-card" data-aos="fade-up">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+            <h2>Research Collab</h2>
+            <p>Select your profile to access the collaborative research environment</p>
+            
+            <div class="user-selector">
+                <div class="user-option" onclick="loginUser('user1')">
+                    <i class="fas fa-user-astronaut"></i>
+                    <h3>Researcher A</h3>
+                    <p>Principal Investigator</p>
+                </div>
+                <div class="user-option" onclick="loginUser('user2')">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Researcher B</h3>
+                    <p>Research Associate</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; color: var(--neutral-600); font-size: 0.75rem;">
+                <i class="fas fa-shield-alt"></i> Secure end-to-end encrypted
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Chat Application (Hidden by default) -->
+    <div id="chatApp" class="chat-application" style="display: none;">
+        <!-- Sidebar -->
+        <div class="chat-sidebar">
+            <div class="sidebar-header">
+                <div class="user-profile-large">
+                    <div class="user-avatar-large" id="currentUserAvatar">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div class="user-info">
+                        <h3 id="currentUserName">Researcher A</h3>
+                        <div class="user-status">
+                            <span class="status-dot"></span>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search conversations...">
+            </div>
+            
+            <div class="conversations-list">
+                <div class="conversation-item active">
+                    <div class="conversation-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                        <span class="online-indicator"></span>
+                    </div>
+                    <div class="conversation-details">
+                        <div class="conversation-header">
+                            <span class="conversation-name">Research Partner</span>
+                            <span class="conversation-time">Now</span>
+                        </div>
+                        <div class="conversation-preview">
+                            <span>Research collaboration...</span>
+                            <span class="unread-badge">2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="chat-main">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <div class="chat-user-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="chat-user-details">
+                        <h2>Research Partner</h2>
+                        <div class="typing-indicator" id="typingIndicator">
+                            <span>typing</span>
+                            <span>
+                                <i class="fas fa-circle"></i>
+                                <i class="fas fa-circle"></i>
+                                <i class="fas fa-circle"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <i class="fas fa-phone"></i>
+                    <i class="fas fa-video"></i>
+                    <i class="fas fa-info-circle"></i>
+                </div>
+            </div>
+            
+            <!-- Messages Container -->
+            <div class="messages-container" id="messagesContainer"></div>
+            
+            <!-- Chat Input -->
+            <div class="chat-input-area">
+                <div class="input-wrapper">
+                    <div class="input-actions">
+                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-image"></i>
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <textarea 
+                        class="message-input" 
+                        id="messageInput" 
+                        placeholder="Type your research notes..." 
+                        rows="1"
+                        oninput="autoResize(this)"
+                    ></textarea>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase Config & Chat Engine -->
+    <script src="chat-engine.js"></script>
+    
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        
+        // Auto-resize textarea
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+        
+        // Global variables
+        let currentUser = null;
+        let currentUserId = null;
+        
+        // Login function
+        function loginUser(userType) {
+            if (userType === 'user1') {
+                currentUser = 'Researcher A';
+                currentUserId = 'user1';
+                document.getElementById('currentUserName').textContent = 'Researcher A';
+                document.getElementById('currentUserAvatar').innerHTML = '<i class="fas fa-user-astronaut"></i>';
+            } else {
+                currentUser = 'Researcher B';
+                currentUserId = 'user2';
+                document.getElementById('currentUserName').textContent = 'Researcher B';
+                document.getElementById('currentUserAvatar').innerHTML = '<i class="fas fa-user-graduate"></i>';
+            }
+            
+            // Hide login, show chat
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('chatApp').style.display = 'flex';
+            
+            // Initialize chat
+            initializeChat();
+        }
+    </script>
+    
+    <!-- Copyright Footer -->
+    <div style="position: fixed; bottom: 1rem; right: 1rem; color: rgba(255,255,255,0.2); font-size: 0.75rem; z-index: 10000; pointer-events: none;">
+        <i class="far fa-copyright"></i> 2026 • Designed by Kanishk Ghongade
+    </div>
+</body>
+</html>
