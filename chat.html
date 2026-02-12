@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Instagram Style • Parnjal & Danraj</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Research Collab • Parnjal & Danraj</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,22 +18,25 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     
     <style>
-        /* ===== INSTAGRAM CLONE - PARNJAL & DANRAJ ===== */
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #000;
             color: white;
-            overflow: hidden;
             height: 100vh;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
         }
         
-        /* ===== INSTAGRAM LOGIN SCREEN ===== */
+        /* ===== LOGIN SCREEN ===== */
         .instagram-login {
             position: fixed;
             top: 0;
@@ -45,69 +48,60 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
+            padding: 20px;
         }
         
         .login-container {
             max-width: 400px;
-            width: 90%;
+            width: 100%;
             text-align: center;
         }
         
         .instagram-logo {
-            font-size: 3rem;
+            font-size: 2.2rem;
             margin-bottom: 2rem;
             font-weight: 700;
             background: linear-gradient(45deg, #8b5cf6, #10b981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .instagram-logo i {
-            background: linear-gradient(45deg, #8b5cf6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .username-input {
             width: 100%;
-            padding: 1rem 1.25rem;
+            padding: 16px 20px;
             background: #121212;
             border: 1px solid #262626;
-            border-radius: 12px;
+            border-radius: 16px;
             color: white;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .username-input:focus {
-            outline: none;
-            border-color: #8b5cf6;
-        }
-        
-        .username-input::placeholder {
-            color: #737373;
+            font-size: 16px;
+            margin-bottom: 16px;
         }
         
         .profile-selector {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
         }
         
         .profile-btn {
-            flex: 1;
-            padding: 1rem;
+            width: 100%;
+            padding: 16px;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 16px;
+            font-size: 16px;
             font-weight: 600;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
-            transition: all 0.3s ease;
+            gap: 12px;
+            transition: all 0.2s ease;
         }
         
         .profile-btn.parnjal {
@@ -118,251 +112,118 @@
             background: linear-gradient(145deg, #10b981, #059669);
         }
         
-        .profile-btn:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
-        
-        .login-divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: #737373;
-            font-size: 0.9rem;
-            margin: 1.5rem 0;
-        }
-        
-        .login-divider::before,
-        .login-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #262626;
-        }
-        
-        /* ===== INSTAGRAM MAIN APP ===== */
+        /* ===== MOBILE-FIRST CHAT ===== */
         .instagram-app {
             display: none;
             height: 100vh;
             width: 100vw;
             background: #000;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: hidden;
         }
         
         .instagram-app.active {
-            display: block;
-        }
-        
-        /* ===== INSTAGRAM SIDEBAR ===== */
-        .instagram-sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 320px;
-            height: 100vh;
-            background: #000;
-            border-right: 1px solid #262626;
-            padding: 1.5rem 1rem;
             display: flex;
             flex-direction: column;
         }
         
-        .sidebar-header {
-            padding: 1rem 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .sidebar-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, #8b5cf6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .user-profile-card {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: #0a0a0a;
-            border: 1px solid #262626;
-            border-radius: 16px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .user-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            color: white;
-        }
-        
-        .user-avatar.parnjal {
-            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
-        }
-        
-        .user-avatar.danraj {
-            background: linear-gradient(145deg, #10b981, #059669);
-        }
-        
-        .user-info-card {
-            flex: 1;
-        }
-        
-        .user-username {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-        
-        .user-fullname {
-            color: #737373;
-            font-size: 0.85rem;
-        }
-        
-        .instagram-nav {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            color: #e4e6eb;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .nav-item:hover {
-            background: #1a1a1a;
-        }
-        
-        .nav-item.active {
-            background: #1a1a1a;
-            color: white;
-            font-weight: 600;
-        }
-        
-        .nav-item i {
-            font-size: 1.25rem;
-            width: 24px;
-            text-align: center;
-        }
-        
-        /* ===== INSTAGRAM CHAT AREA ===== */
-        .instagram-chat {
-            margin-left: 320px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: #000;
-            border-left: 1px solid #262626;
-        }
-        
-        .chat-header {
+        /* ===== MOBILE CHAT HEADER ===== */
+        .mobile-chat-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 2rem;
+            padding: 12px 16px;
             background: #000;
             border-bottom: 1px solid #262626;
-            height: 80px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
-        .chat-user {
+        .mobile-back-btn {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 12px;
         }
         
-        .chat-avatar {
-            width: 48px;
-            height: 48px;
+        .mobile-back-btn i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .mobile-avatar {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: white;
+            font-size: 20px;
         }
         
-        .chat-avatar.parnjal {
+        .mobile-avatar.parnjal {
             background: linear-gradient(145deg, #8b5cf6, #6d28d9);
         }
         
-        .chat-avatar.danraj {
+        .mobile-avatar.danraj {
             background: linear-gradient(145deg, #10b981, #059669);
         }
         
-        .chat-info h3 {
-            font-size: 1.1rem;
+        .mobile-user-details h3 {
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 0.25rem;
+            margin-bottom: 4px;
         }
         
-        .chat-status {
-            font-size: 0.85rem;
+        .mobile-user-status {
+            font-size: 13px;
             color: #737373;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 6px;
         }
         
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        
-        .typing-indicator {
-            color: #10b981;
-            font-size: 0.85rem;
-        }
-        
-        .chat-actions {
+        .mobile-actions {
             display: flex;
-            gap: 1.5rem;
+            gap: 20px;
         }
         
-        .chat-actions i {
+        .mobile-actions i {
+            font-size: 22px;
             color: #e4e6eb;
-            font-size: 1.25rem;
-            cursor: pointer;
-            transition: color 0.2s ease;
         }
         
-        .chat-actions i:hover {
-            color: white;
-        }
-        
-        /* ===== MESSAGES CONTAINER ===== */
-        .messages-container {
+        /* ===== MESSAGES CONTAINER (MOBILE) ===== */
+        .mobile-messages-container {
             flex: 1;
             overflow-y: auto;
-            padding: 2rem;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 8px;
             background: #000;
+            -webkit-overflow-scrolling: touch;
         }
         
         .message-wrapper {
             display: flex;
-            margin-bottom: 0.25rem;
+            margin-bottom: 4px;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .message-wrapper.self {
@@ -370,8 +231,8 @@
         }
         
         .message-bubble {
-            max-width: 55%;
-            padding: 0.75rem 1.25rem;
+            max-width: 85%;
+            padding: 12px 16px;
             border-radius: 22px;
             position: relative;
             word-break: break-word;
@@ -390,22 +251,22 @@
         }
         
         .message-sender {
-            font-size: 0.75rem;
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 0.25rem;
+            margin-bottom: 4px;
             color: #8b5cf6;
         }
         
         .message-text {
-            font-size: 0.95rem;
+            font-size: 15px;
             line-height: 1.5;
         }
         
         .message-image {
-            max-width: 250px;
+            max-width: 100%;
             max-height: 250px;
             border-radius: 16px;
-            margin-top: 0.5rem;
+            margin-top: 6px;
             cursor: pointer;
             border: 2px solid rgba(255,255,255,0.1);
         }
@@ -414,9 +275,9 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 0.375rem;
-            margin-top: 0.25rem;
-            font-size: 0.7rem;
+            gap: 6px;
+            margin-top: 4px;
+            font-size: 11px;
             color: rgba(255,255,255,0.6);
         }
         
@@ -424,106 +285,85 @@
             color: #60a5fa;
         }
         
-        .message-time {
-            font-size: 0.7rem;
-        }
-        
-        /* ===== CHAT INPUT ===== */
-        .chat-input-wrapper {
-            padding: 1.5rem 2rem;
+        /* ===== CHAT INPUT (MOBILE) ===== */
+        .mobile-chat-input-wrapper {
             background: #000;
             border-top: 1px solid #262626;
+            padding: 12px 16px;
+            position: sticky;
+            bottom: 0;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
-        .input-container {
+        .mobile-input-container {
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            align-items: flex-end;
+            gap: 8px;
             background: #1a1a1a;
             border: 1px solid #262626;
             border-radius: 30px;
-            padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+            padding: 6px 6px 6px 16px;
         }
         
-        .input-container:focus-within {
-            border-color: #10b981;
-            background: #1f1f1f;
-        }
-        
-        .input-actions {
+        .mobile-input-actions {
             display: flex;
-            gap: 0.75rem;
+            gap: 12px;
             align-items: center;
         }
         
-        .input-actions i {
+        .mobile-input-actions i {
             color: #737373;
-            font-size: 1.35rem;
+            font-size: 24px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
         
-        .input-actions i:hover {
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        .message-input {
+        .mobile-message-input {
             flex: 1;
             background: transparent;
             border: none;
             color: white;
-            font-size: 0.95rem;
-            padding: 0.65rem 0;
-            max-height: 100px;
+            font-size: 16px;
+            padding: 10px 0;
+            max-height: 120px;
             resize: none;
             font-family: 'Inter', sans-serif;
         }
         
-        .message-input:focus {
+        .mobile-message-input:focus {
             outline: none;
         }
         
-        .message-input::placeholder {
-            color: #525252;
-        }
-        
-        .send-btn {
+        .mobile-send-btn {
             width: 44px;
             height: 44px;
             background: #10b981;
             border: none;
             border-radius: 50%;
             color: white;
-            font-size: 1.1rem;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
             flex-shrink: 0;
         }
         
-        .send-btn:hover {
-            background: #059669;
-            transform: scale(1.05);
-        }
-        
         /* ===== IMAGE PREVIEW ===== */
-        .image-preview-container {
+        .mobile-image-preview {
             display: none;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
+            gap: 12px;
+            padding: 12px 16px;
             background: #1a1a1a;
             border-bottom: 1px solid #262626;
         }
         
-        .image-preview-container.active {
+        .mobile-image-preview.active {
             display: flex;
         }
         
-        .image-preview {
+        .mobile-preview-img {
             width: 48px;
             height: 48px;
             border-radius: 12px;
@@ -531,31 +371,71 @@
             border: 2px solid #10b981;
         }
         
-        .remove-image {
+        .mobile-preview-name {
+            flex: 1;
+            font-size: 14px;
+            color: #e4e6eb;
+        }
+        
+        .mobile-remove-image {
             color: #ef4444;
+            font-size: 24px;
             cursor: pointer;
-            font-size: 1.25rem;
         }
         
         /* ===== EMOJI PICKER ===== */
-        .emoji-picker-container {
-            position: absolute;
-            bottom: 100px;
-            left: 340px;
+        .mobile-emoji-picker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
             display: none;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
         
-        .emoji-picker-container.active {
+        .mobile-emoji-picker.active {
             display: block;
+        }
+        
+        /* ===== DELETE ALL BUTTON ===== */
+        .delete-all-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 16px auto;
+            width: fit-content;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .delete-all-btn i {
+            font-size: 16px;
+        }
+        
+        .delete-all-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 8px 16px 16px;
+        }
+        
+        /* ===== DESKTOP SIDEBAR HIDE ON MOBILE ===== */
+        .instagram-sidebar,
+        .chat-header {
+            display: none !important;
         }
         
         /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 4px;
         }
         
         ::-webkit-scrollbar-track {
@@ -566,48 +446,21 @@
             background: #333;
             border-radius: 10px;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #444;
-        }
-        
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1000px) {
-            .instagram-sidebar {
-                width: 80px;
-                padding: 1rem 0.5rem;
-            }
-            
-            .sidebar-header h2,
-            .user-info-card,
-            .nav-item span {
-                display: none;
-            }
-            
-            .instagram-chat {
-                margin-left: 80px;
-            }
-            
-            .user-profile-card {
-                justify-content: center;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- ===== INSTAGRAM LOGIN SCREEN ===== -->
+    <!-- ===== LOGIN SCREEN ===== -->
     <div id="loginScreen" class="instagram-login">
         <div class="login-container">
             <div class="instagram-logo">
-                <i class="fas fa-flask"></i> Research Collab
+                <i class="fas fa-flask"></i>
+                <span>Research</span>
+                <i class="fas fa-dna"></i>
             </div>
             
-            <div style="margin-bottom: 2rem; color: #737373;">
-                <p>Create your username to start</p>
-            </div>
+            <p style="color: #737373; margin-bottom: 30px;">Login to start chatting</p>
             
-            <!-- Username Input -->
-            <input type="text" id="usernameInput" class="username-input" placeholder="Username" maxlength="30">
+            <input type="text" id="usernameInput" class="username-input" placeholder="Enter username (optional)" maxlength="30">
             
             <div class="profile-selector">
                 <button class="profile-btn parnjal" onclick="loginAsParnjal()">
@@ -620,280 +473,174 @@
                 </button>
             </div>
             
-            <div class="login-divider">
-                <span>Instagram Style Chat</span>
-            </div>
-            
-            <div style="color: #525252; font-size: 0.8rem; margin-top: 2rem;">
-                <i class="fas fa-shield-alt"></i> Private messaging • End-to-end encrypted
+            <div style="color: #525252; font-size: 13px; margin-top: 40px;">
+                <i class="fas fa-shield-alt"></i> End-to-end encrypted
             </div>
         </div>
     </div>
     
-    <!-- ===== PARNJAL'S INSTAGRAM ===== -->
+    <!-- ===== PARNJAL'S MOBILE CHAT ===== -->
     <div id="parnjalApp" class="instagram-app">
-        <!-- Sidebar -->
-        <div class="instagram-sidebar">
-            <div class="sidebar-header">
-                <h2><i class="fas fa-flask"></i> research</h2>
-            </div>
-            
-            <!-- Parnjal Profile Card -->
-            <div class="user-profile-card">
-                <div class="user-avatar parnjal">
-                    <i class="fas fa-flask"></i>
-                </div>
-                <div class="user-info-card">
-                    <div class="user-username" id="parnjalUsernameDisplay">@parnjal</div>
-                    <div class="user-fullname">Parnjal • Principal Investigator</div>
-                </div>
-            </div>
-            
-            <!-- Navigation -->
-            <div class="instagram-nav">
-                <div class="nav-item active">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-search"></i>
-                    <span>Search</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-compass"></i>
-                    <span>Explore</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-film"></i>
-                    <span>Reels</span>
-                </div>
-                <div class="nav-item active" style="margin-top: 1rem;">
-                    <i class="fas fa-comment"></i>
-                    <span>Messages</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-heart"></i>
-                    <span>Notifications</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-plus-square"></i>
-                    <span>Create</span>
-                </div>
-                <div class="nav-item" style="margin-top: auto;">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-bars"></i>
-                    <span>More</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Chat Area -->
-        <div class="instagram-chat">
-            <!-- Chat Header - Danraj -->
-            <div class="chat-header">
-                <div class="chat-user">
-                    <div class="chat-avatar danraj">
+        <!-- Mobile Header -->
+        <div class="mobile-chat-header">
+            <div class="mobile-back-btn">
+                <i class="fas fa-arrow-left" onclick="logout()"></i>
+                <div class="mobile-user-info">
+                    <div class="mobile-avatar danraj">
                         <i class="fas fa-dna"></i>
                     </div>
-                    <div class="chat-info">
+                    <div class="mobile-user-details">
                         <h3>Danraj</h3>
-                        <div class="chat-status">
-                            <span class="online-dot"></span>
+                        <div class="mobile-user-status">
+                            <span class="online-dot" style="background: #10b981; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
                             <span>Research Associate</span>
-                            <span class="typing-indicator" id="parnjalTyping" style="display: none;">typing...</span>
+                            <span id="parnjalTypingMobile" style="color: #10b981; display: none;">typing...</span>
                         </div>
                     </div>
                 </div>
-                <div class="chat-actions">
-                    <i class="fas fa-phone"></i>
-                    <i class="fas fa-video"></i>
-                    <i class="fas fa-info-circle"></i>
-                </div>
             </div>
-            
-            <!-- Image Preview -->
-            <div id="parnjalImagePreview" class="image-preview-container">
-                <img id="parnjalPreview" class="image-preview" src="">
-                <span id="parnjalPreviewName"></span>
-                <i class="fas fa-times-circle remove-image" onclick="clearParnjalImage()"></i>
-            </div>
-            
-            <!-- Messages -->
-            <div id="parnjalMessages" class="messages-container">
-                <!-- Messages will appear here -->
-            </div>
-            
-            <!-- Emoji Picker -->
-            <div id="parnjalEmojiPicker" class="emoji-picker-container">
-                <emoji-picker style="width: 350px; height: 400px;" class="dark"></emoji-picker>
-            </div>
-            
-            <!-- Chat Input -->
-            <div class="chat-input-wrapper">
-                <div class="input-container">
-                    <div class="input-actions">
-                        <i class="fas fa-plus-circle" onclick="document.getElementById('parnjalFileInput').click()"></i>
-                        <i class="fas fa-image" onclick="document.getElementById('parnjalFileInput').click()"></i>
-                        <i class="fas fa-smile" onclick="toggleParnjalEmoji()"></i>
-                    </div>
-                    <textarea 
-                        id="parnjalInput"
-                        class="message-input"
-                        placeholder="Message Danraj..."
-                        rows="1"
-                        oninput="autoResize(this); parnjalTyping()"
-                        onkeydown="handleParnjalKeyPress(event)"
-                    ></textarea>
-                    <button class="send-btn" onclick="sendParnjalMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Hidden file input -->
-            <input type="file" id="parnjalFileInput" accept="image/*" style="display: none;" onchange="handleParnjalImage(event)">
-        </div>
-    </div>
-    
-    <!-- ===== DANRAJ'S INSTAGRAM ===== -->
-    <div id="danrajApp" class="instagram-app">
-        <!-- Sidebar -->
-        <div class="instagram-sidebar">
-            <div class="sidebar-header">
-                <h2><i class="fas fa-dna"></i> research</h2>
-            </div>
-            
-            <!-- Danraj Profile Card -->
-            <div class="user-profile-card">
-                <div class="user-avatar danraj">
-                    <i class="fas fa-dna"></i>
-                </div>
-                <div class="user-info-card">
-                    <div class="user-username" id="danrajUsernameDisplay">@danraj</div>
-                    <div class="user-fullname">Danraj • Research Associate</div>
-                </div>
-            </div>
-            
-            <!-- Navigation -->
-            <div class="instagram-nav">
-                <div class="nav-item active">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-search"></i>
-                    <span>Search</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-compass"></i>
-                    <span>Explore</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-film"></i>
-                    <span>Reels</span>
-                </div>
-                <div class="nav-item active" style="margin-top: 1rem;">
-                    <i class="fas fa-comment"></i>
-                    <span>Messages</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-heart"></i>
-                    <span>Notifications</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-plus-square"></i>
-                    <span>Create</span>
-                </div>
-                <div class="nav-item" style="margin-top: auto;">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-bars"></i>
-                    <span>More</span>
-                </div>
+            <div class="mobile-actions">
+                <i class="fas fa-phone"></i>
+                <i class="fas fa-video"></i>
             </div>
         </div>
         
-        <!-- Chat Area -->
-        <div class="instagram-chat">
-            <!-- Chat Header - Parnjal -->
-            <div class="chat-header">
-                <div class="chat-user">
-                    <div class="chat-avatar parnjal">
+        <!-- Image Preview -->
+        <div id="parnjalImagePreviewMobile" class="mobile-image-preview">
+            <img id="parnjalPreviewMobile" class="mobile-preview-img" src="">
+            <span id="parnjalPreviewNameMobile" class="mobile-preview-name"></span>
+            <i class="fas fa-times-circle mobile-remove-image" onclick="clearParnjalImage()"></i>
+        </div>
+        
+        <!-- Messages -->
+        <div id="parnjalMessagesMobile" class="mobile-messages-container">
+            <!-- Messages will appear here -->
+        </div>
+        
+        <!-- Delete All Button -->
+        <div class="delete-all-wrapper">
+            <button class="delete-all-btn" onclick="deleteAllMessages()">
+                <i class="fas fa-trash"></i>
+                Delete All Chats
+            </button>
+        </div>
+        
+        <!-- Emoji Picker -->
+        <div id="parnjalEmojiPickerMobile" class="mobile-emoji-picker">
+            <emoji-picker style="width: 100%; height: 400px;" class="dark"></emoji-picker>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="mobile-chat-input-wrapper">
+            <div class="mobile-input-container">
+                <div class="mobile-input-actions">
+                    <i class="fas fa-plus-circle" onclick="document.getElementById('parnjalFileInputMobile').click()"></i>
+                    <i class="fas fa-image" onclick="document.getElementById('parnjalFileInputMobile').click()"></i>
+                    <i class="fas fa-smile" onclick="toggleParnjalEmoji()"></i>
+                </div>
+                <textarea 
+                    id="parnjalInputMobile"
+                    class="mobile-message-input"
+                    placeholder="Message Danraj..."
+                    rows="1"
+                    oninput="autoResize(this); parnjalTyping()"
+                    onkeydown="handleParnjalKeyPress(event)"
+                ></textarea>
+                <button class="mobile-send-btn" onclick="sendParnjalMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Hidden file input -->
+        <input type="file" id="parnjalFileInputMobile" accept="image/*" style="display: none;" onchange="handleParnjalImage(event)">
+    </div>
+    
+    <!-- ===== DANRAJ'S MOBILE CHAT ===== -->
+    <div id="danrajApp" class="instagram-app">
+        <!-- Mobile Header -->
+        <div class="mobile-chat-header">
+            <div class="mobile-back-btn">
+                <i class="fas fa-arrow-left" onclick="logout()"></i>
+                <div class="mobile-user-info">
+                    <div class="mobile-avatar parnjal">
                         <i class="fas fa-flask"></i>
                     </div>
-                    <div class="chat-info">
+                    <div class="mobile-user-details">
                         <h3>Parnjal</h3>
-                        <div class="chat-status">
-                            <span class="online-dot"></span>
+                        <div class="mobile-user-status">
+                            <span class="online-dot" style="background: #10b981; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
                             <span>Principal Investigator</span>
-                            <span class="typing-indicator" id="danrajTyping" style="display: none;">typing...</span>
+                            <span id="danrajTypingMobile" style="color: #10b981; display: none;">typing...</span>
                         </div>
                     </div>
                 </div>
-                <div class="chat-actions">
-                    <i class="fas fa-phone"></i>
-                    <i class="fas fa-video"></i>
-                    <i class="fas fa-info-circle"></i>
-                </div>
             </div>
-            
-            <!-- Image Preview -->
-            <div id="danrajImagePreview" class="image-preview-container">
-                <img id="danrajPreview" class="image-preview" src="">
-                <span id="danrajPreviewName"></span>
-                <i class="fas fa-times-circle remove-image" onclick="clearDanrajImage()"></i>
+            <div class="mobile-actions">
+                <i class="fas fa-phone"></i>
+                <i class="fas fa-video"></i>
             </div>
-            
-            <!-- Messages -->
-            <div id="danrajMessages" class="messages-container">
-                <!-- Messages will appear here -->
-            </div>
-            
-            <!-- Emoji Picker -->
-            <div id="danrajEmojiPicker" class="emoji-picker-container">
-                <emoji-picker style="width: 350px; height: 400px;" class="dark"></emoji-picker>
-            </div>
-            
-            <!-- Chat Input -->
-            <div class="chat-input-wrapper">
-                <div class="input-container">
-                    <div class="input-actions">
-                        <i class="fas fa-plus-circle" onclick="document.getElementById('danrajFileInput').click()"></i>
-                        <i class="fas fa-image" onclick="document.getElementById('danrajFileInput').click()"></i>
-                        <i class="fas fa-smile" onclick="toggleDanrajEmoji()"></i>
-                    </div>
-                    <textarea 
-                        id="danrajInput"
-                        class="message-input"
-                        placeholder="Message Parnjal..."
-                        rows="1"
-                        oninput="autoResize(this); danrajTyping()"
-                        onkeydown="handleDanrajKeyPress(event)"
-                    ></textarea>
-                    <button class="send-btn" onclick="sendDanrajMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Hidden file input -->
-            <input type="file" id="danrajFileInput" accept="image/*" style="display: none;" onchange="handleDanrajImage(event)">
         </div>
+        
+        <!-- Image Preview -->
+        <div id="danrajImagePreviewMobile" class="mobile-image-preview">
+            <img id="danrajPreviewMobile" class="mobile-preview-img" src="">
+            <span id="danrajPreviewNameMobile" class="mobile-preview-name"></span>
+            <i class="fas fa-times-circle mobile-remove-image" onclick="clearDanrajImage()"></i>
+        </div>
+        
+        <!-- Messages -->
+        <div id="danrajMessagesMobile" class="mobile-messages-container">
+            <!-- Messages will appear here -->
+        </div>
+        
+        <!-- Delete All Button -->
+        <div class="delete-all-wrapper">
+            <button class="delete-all-btn" onclick="deleteAllMessages()">
+                <i class="fas fa-trash"></i>
+                Delete All Chats
+            </button>
+        </div>
+        
+        <!-- Emoji Picker -->
+        <div id="danrajEmojiPickerMobile" class="mobile-emoji-picker">
+            <emoji-picker style="width: 100%; height: 400px;" class="dark"></emoji-picker>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="mobile-chat-input-wrapper">
+            <div class="mobile-input-container">
+                <div class="mobile-input-actions">
+                    <i class="fas fa-plus-circle" onclick="document.getElementById('danrajFileInputMobile').click()"></i>
+                    <i class="fas fa-image" onclick="document.getElementById('danrajFileInputMobile').click()"></i>
+                    <i class="fas fa-smile" onclick="toggleDanrajEmoji()"></i>
+                </div>
+                <textarea 
+                    id="danrajInputMobile"
+                    class="mobile-message-input"
+                    placeholder="Message Parnjal..."
+                    rows="1"
+                    oninput="autoResize(this); danrajTyping()"
+                    onkeydown="handleDanrajKeyPress(event)"
+                ></textarea>
+                <button class="mobile-send-btn" onclick="sendDanrajMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Hidden file input -->
+        <input type="file" id="danrajFileInputMobile" accept="image/*" style="display: none;" onchange="handleDanrajImage(event)">
     </div>
     
     <script>
         // ============================================
-        //   INSTAGRAM CLONE - PARNJAL & DANRAJ
-        //   ✅ Username system
-        //   ✅ Private chat box
-        //   ✅ Dono ek dusre se baat kar sakte hain
-        //   ✅ Instagram style UI
-        //   Designed by: Kanishk Ghongade
+        //   INSTAGRAM STYLE CHAT - FULLY MOBILE FRIENDLY
+        //   ✅ Mobile optimized UI
+        //   ✅ Messages save in Firebase
+        //   ✅ Delete All button
+        //   ✅ Real-time chat
+        //   Made by: Kanishk Ghongade
         // ============================================
         
         // Firebase Config
@@ -913,9 +660,17 @@
         const storage = firebase.storage();
         
         // Global Variables
+        let currentUser = '';
         let currentUsername = '';
         let parnjalUsername = '@parnjal';
         let danrajUsername = '@danraj';
+        
+        let parnjalSelectedImage = null;
+        let danrajSelectedImage = null;
+        let parnjalTypingTimeout = null;
+        let danrajTypingTimeout = null;
+        let parnjalEmojiActive = false;
+        let danrajEmojiActive = false;
         
         // ===== LOGIN FUNCTIONS =====
         window.loginAsParnjal = function() {
@@ -924,14 +679,13 @@
                 parnjalUsername = username.startsWith('@') ? username : '@' + username;
             }
             
-            document.getElementById('parnjalUsernameDisplay').textContent = parnjalUsername;
+            currentUser = 'parnjal';
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('parnjalApp').classList.add('active');
-            document.getElementById('danrajApp').classList.remove('active');
             
-            loadParnjalMessages();
-            setupParnjalTypingListener();
-            setTimeout(() => document.getElementById('parnjalInput').focus(), 300);
+            loadMessages('parnjal');
+            setupTypingListener('parnjal');
+            setTimeout(() => document.getElementById('parnjalInputMobile').focus(), 300);
         };
         
         window.loginAsDanraj = function() {
@@ -940,29 +694,38 @@
                 danrajUsername = username.startsWith('@') ? username : '@' + username;
             }
             
-            document.getElementById('danrajUsernameDisplay').textContent = danrajUsername;
+            currentUser = 'danraj';
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('danrajApp').classList.add('active');
-            document.getElementById('parnjalApp').classList.remove('active');
             
-            loadDanrajMessages();
-            setupDanrajTypingListener();
-            setTimeout(() => document.getElementById('danrajInput').focus(), 300);
+            loadMessages('danraj');
+            setupTypingListener('danraj');
+            setTimeout(() => document.getElementById('danrajInputMobile').focus(), 300);
         };
         
-        // ===== PARNJAL'S FUNCTIONS =====
-        let parnjalSelectedImage = null;
-        let parnjalEmojiActive = false;
-        let parnjalTypingTimeout = null;
+        window.logout = function() {
+            if (currentUser === 'parnjal') {
+                stopParnjalTyping();
+            } else {
+                stopDanrajTyping();
+            }
+            
+            document.getElementById('parnjalApp').classList.remove('active');
+            document.getElementById('danrajApp').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('usernameInput').value = '';
+            currentUser = '';
+        };
         
+        // ===== SEND MESSAGES =====
         window.sendParnjalMessage = function() {
-            const input = document.getElementById('parnjalInput');
+            const input = document.getElementById('parnjalInputMobile');
             const message = input.value.trim();
             
             if (!message && !parnjalSelectedImage) return;
             
             if (parnjalSelectedImage) {
-                uploadParnjalImage(message);
+                uploadImage('parnjal', message);
             } else {
                 const messageData = {
                     from: 'parnjal',
@@ -985,181 +748,14 @@
             input.focus();
         };
         
-        function uploadParnjalImage(text) {
-            if (!parnjalSelectedImage) return;
-            
-            const file = parnjalSelectedImage;
-            const fileName = `parnjal_${Date.now()}_${file.name}`;
-            const storageRef = storage.ref(`chat_images/${fileName}`);
-            
-            storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL())
-            .then(url => {
-                const messageData = {
-                    from: 'parnjal',
-                    fromName: 'Parnjal',
-                    fromUsername: parnjalUsername,
-                    to: 'danraj',
-                    toUsername: danrajUsername,
-                    text: text || '📷 Shared an image',
-                    imageUrl: url,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    seen: false,
-                    type: 'image'
-                };
-                
-                return database.ref('messages').push(messageData);
-            })
-            .then(() => clearParnjalImage());
-        }
-        
-        function loadParnjalMessages() {
-            const container = document.getElementById('parnjalMessages');
-            
-            database.ref('messages').once('value', (snapshot) => {
-                container.innerHTML = '';
-                
-                const messages = snapshot.val();
-                if (messages) {
-                    Object.keys(messages).forEach(key => {
-                        const msg = messages[key];
-                        if ((msg.from === 'parnjal' && msg.to === 'danraj') || 
-                            (msg.from === 'danraj' && msg.to === 'parnjal')) {
-                            displayParnjalMessage(msg, key);
-                        }
-                    });
-                }
-            });
-            
-            database.ref('messages').on('child_added', (snapshot) => {
-                const msg = snapshot.val();
-                const msgId = snapshot.key;
-                
-                if ((msg.from === 'parnjal' && msg.to === 'danraj') || 
-                    (msg.from === 'danraj' && msg.to === 'parnjal')) {
-                    if (!document.getElementById(`parnjal-msg-${msgId}`)) {
-                        displayParnjalMessage(msg, msgId);
-                        
-                        if (msg.from === 'danraj' && !msg.seen) {
-                            database.ref(`messages/${msgId}`).update({ seen: true });
-                        }
-                    }
-                }
-            });
-        }
-        
-        function displayParnjalMessage(msg, msgId) {
-            const container = document.getElementById('parnjalMessages');
-            const isSelf = msg.from === 'parnjal';
-            
-            const wrapper = document.createElement('div');
-            wrapper.className = `message-wrapper ${isSelf ? 'self' : 'other'}`;
-            wrapper.id = `parnjal-msg-${msgId}`;
-            
-            let time = '';
-            if (msg.timestamp) {
-                const date = new Date(msg.timestamp);
-                time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            }
-            
-            let content = '';
-            if (!isSelf) {
-                content += `<div class="message-sender" style="color: #10b981;">Danraj ${msg.fromUsername || ''}</div>`;
-            }
-            if (msg.imageUrl) {
-                content += `<img src="${msg.imageUrl}" class="message-image" onclick="window.open('${msg.imageUrl}', '_blank')">`;
-            }
-            if (msg.text) {
-                content += `<div class="message-text">${escapeHTML(msg.text)}</div>`;
-            }
-            
-            wrapper.innerHTML = `
-                <div class="message-bubble">
-                    ${content}
-                    <div class="message-meta">
-                        <span class="message-time">${time}</span>
-                        ${isSelf ? `<span class="message-status">${msg.seen ? '<i class="fas fa-check-double seen"></i>' : '<i class="fas fa-check"></i>'}</span>` : ''}
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(wrapper);
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        window.parnjalTyping = function() {
-            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
-            
-            database.ref('typing/parnjal_to_danraj').set({
-                isTyping: true,
-                timestamp: Date.now()
-            });
-            
-            parnjalTypingTimeout = setTimeout(() => {
-                database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
-            }, 2000);
-        };
-        
-        function stopParnjalTyping() {
-            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
-            database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
-        }
-        
-        function setupParnjalTypingListener() {
-            database.ref('typing/danraj_to_parnjal').on('value', (snapshot) => {
-                const typing = snapshot.val();
-                const indicator = document.getElementById('parnjalTyping');
-                if (typing?.isTyping && Date.now() - typing.timestamp < 3000) {
-                    indicator.style.display = 'inline';
-                } else {
-                    indicator.style.display = 'none';
-                }
-            });
-        }
-        
-        window.handleParnjalImage = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Image size should be less than 5MB');
-                return;
-            }
-            
-            parnjalSelectedImage = file;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('parnjalPreview').src = e.target.result;
-                document.getElementById('parnjalPreviewName').textContent = file.name.length > 20 ? file.name.substring(0,20) + '...' : file.name;
-                document.getElementById('parnjalImagePreview').classList.add('active');
-            };
-            reader.readAsDataURL(file);
-        };
-        
-        window.clearParnjalImage = function() {
-            parnjalSelectedImage = null;
-            document.getElementById('parnjalImagePreview').classList.remove('active');
-            document.getElementById('parnjalFileInput').value = '';
-        };
-        
-        window.toggleParnjalEmoji = function() {
-            const picker = document.getElementById('parnjalEmojiPicker');
-            parnjalEmojiActive = !parnjalEmojiActive;
-            picker.classList.toggle('active');
-        };
-        
-        // ===== DANRAJ'S FUNCTIONS =====
-        let danrajSelectedImage = null;
-        let danrajEmojiActive = false;
-        let danrajTypingTimeout = null;
-        
         window.sendDanrajMessage = function() {
-            const input = document.getElementById('danrajInput');
+            const input = document.getElementById('danrajInputMobile');
             const message = input.value.trim();
             
             if (!message && !danrajSelectedImage) return;
             
             if (danrajSelectedImage) {
-                uploadDanrajImage(message);
+                uploadImage('danraj', message);
             } else {
                 const messageData = {
                     from: 'danraj',
@@ -1182,21 +778,22 @@
             input.focus();
         };
         
-        function uploadDanrajImage(text) {
-            if (!danrajSelectedImage) return;
+        // ===== UPLOAD IMAGES =====
+        function uploadImage(user, text) {
+            const file = user === 'parnjal' ? parnjalSelectedImage : danrajSelectedImage;
+            if (!file) return;
             
-            const file = danrajSelectedImage;
-            const fileName = `danraj_${Date.now()}_${file.name}`;
+            const fileName = `${user}_${Date.now()}_${file.name}`;
             const storageRef = storage.ref(`chat_images/${fileName}`);
             
             storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL())
             .then(url => {
                 const messageData = {
-                    from: 'danraj',
-                    fromName: 'Danraj',
-                    fromUsername: danrajUsername,
-                    to: 'parnjal',
-                    toUsername: parnjalUsername,
+                    from: user,
+                    fromName: user === 'parnjal' ? 'Parnjal' : 'Danraj',
+                    fromUsername: user === 'parnjal' ? parnjalUsername : danrajUsername,
+                    to: user === 'parnjal' ? 'danraj' : 'parnjal',
+                    toUsername: user === 'parnjal' ? danrajUsername : parnjalUsername,
                     text: text || '📷 Shared an image',
                     imageUrl: url,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -1206,37 +803,55 @@
                 
                 return database.ref('messages').push(messageData);
             })
-            .then(() => clearDanrajImage());
+            .then(() => {
+                if (user === 'parnjal') {
+                    clearParnjalImage();
+                } else {
+                    clearDanrajImage();
+                }
+            });
         }
         
-        function loadDanrajMessages() {
-            const container = document.getElementById('danrajMessages');
+        // ===== LOAD MESSAGES =====
+        function loadMessages(user) {
+            const containerId = user === 'parnjal' ? 'parnjalMessagesMobile' : 'danrajMessagesMobile';
+            const container = document.getElementById(containerId);
             
-            database.ref('messages').once('value', (snapshot) => {
-                container.innerHTML = '';
-                
+            // Clear existing messages
+            container.innerHTML = '';
+            
+            // Load all messages
+            database.ref('messages').orderByChild('timestamp').once('value', (snapshot) => {
                 const messages = snapshot.val();
                 if (messages) {
-                    Object.keys(messages).forEach(key => {
+                    const sortedKeys = Object.keys(messages).sort((a, b) => 
+                        messages[a].timestamp - messages[b].timestamp
+                    );
+                    
+                    sortedKeys.forEach(key => {
                         const msg = messages[key];
-                        if ((msg.from === 'danraj' && msg.to === 'parnjal') || 
-                            (msg.from === 'parnjal' && msg.to === 'danraj')) {
-                            displayDanrajMessage(msg, key);
+                        if ((msg.from === 'parnjal' && msg.to === 'danraj') || 
+                            (msg.from === 'danraj' && msg.to === 'parnjal')) {
+                            displayMessage(msg, key, user);
                         }
                     });
                 }
             });
             
+            // Listen for new messages
             database.ref('messages').on('child_added', (snapshot) => {
                 const msg = snapshot.val();
                 const msgId = snapshot.key;
                 
-                if ((msg.from === 'danraj' && msg.to === 'parnjal') || 
-                    (msg.from === 'parnjal' && msg.to === 'danraj')) {
-                    if (!document.getElementById(`danraj-msg-${msgId}`)) {
-                        displayDanrajMessage(msg, msgId);
+                if ((msg.from === 'parnjal' && msg.to === 'danraj') || 
+                    (msg.from === 'danraj' && msg.to === 'parnjal')) {
+                    
+                    const existingMsg = document.getElementById(`${user}-msg-${msgId}`);
+                    if (!existingMsg) {
+                        displayMessage(msg, msgId, user);
                         
-                        if (msg.from === 'parnjal' && !msg.seen) {
+                        // Mark as seen if received by other user
+                        if (msg.from !== user && !msg.seen) {
                             database.ref(`messages/${msgId}`).update({ seen: true });
                         }
                     }
@@ -1244,13 +859,15 @@
             });
         }
         
-        function displayDanrajMessage(msg, msgId) {
-            const container = document.getElementById('danrajMessages');
-            const isSelf = msg.from === 'danraj';
+        // ===== DISPLAY MESSAGES =====
+        function displayMessage(msg, msgId, currentUserView) {
+            const containerId = currentUserView === 'parnjal' ? 'parnjalMessagesMobile' : 'danrajMessagesMobile';
+            const container = document.getElementById(containerId);
+            const isSelf = msg.from === currentUserView;
             
             const wrapper = document.createElement('div');
             wrapper.className = `message-wrapper ${isSelf ? 'self' : 'other'}`;
-            wrapper.id = `danraj-msg-${msgId}`;
+            wrapper.id = `${currentUserView}-msg-${msgId}`;
             
             let time = '';
             if (msg.timestamp) {
@@ -1260,11 +877,14 @@
             
             let content = '';
             if (!isSelf) {
-                content += `<div class="message-sender" style="color: #8b5cf6;">Parnjal ${msg.fromUsername || ''}</div>`;
+                const senderColor = msg.from === 'parnjal' ? '#8b5cf6' : '#10b981';
+                content += `<div class="message-sender" style="color: ${senderColor};">${msg.fromName} ${msg.fromUsername || ''}</div>`;
             }
+            
             if (msg.imageUrl) {
                 content += `<img src="${msg.imageUrl}" class="message-image" onclick="window.open('${msg.imageUrl}', '_blank')">`;
             }
+            
             if (msg.text) {
                 content += `<div class="message-text">${escapeHTML(msg.text)}</div>`;
             }
@@ -1283,6 +903,41 @@
             container.scrollTop = container.scrollHeight;
         }
         
+        // ===== DELETE ALL MESSAGES =====
+        window.deleteAllMessages = function() {
+            if (confirm('Are you sure you want to delete all chats? This cannot be undone!')) {
+                database.ref('messages').remove()
+                    .then(() => {
+                        alert('All messages deleted successfully!');
+                        
+                        // Clear UI
+                        if (currentUser === 'parnjal') {
+                            document.getElementById('parnjalMessagesMobile').innerHTML = '';
+                        } else {
+                            document.getElementById('danrajMessagesMobile').innerHTML = '';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting messages:', error);
+                        alert('Error deleting messages. Please try again.');
+                    });
+            }
+        };
+        
+        // ===== TYPING INDICATORS =====
+        window.parnjalTyping = function() {
+            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
+            
+            database.ref('typing/parnjal_to_danraj').set({
+                isTyping: true,
+                timestamp: Date.now()
+            });
+            
+            parnjalTypingTimeout = setTimeout(() => {
+                database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
+            }, 2000);
+        };
+        
         window.danrajTyping = function() {
             if (danrajTypingTimeout) clearTimeout(danrajTypingTimeout);
             
@@ -1296,22 +951,60 @@
             }, 2000);
         };
         
+        function stopParnjalTyping() {
+            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
+            database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
+        }
+        
         function stopDanrajTyping() {
             if (danrajTypingTimeout) clearTimeout(danrajTypingTimeout);
             database.ref('typing/danraj_to_parnjal').set({ isTyping: false });
         }
         
-        function setupDanrajTypingListener() {
-            database.ref('typing/parnjal_to_danraj').on('value', (snapshot) => {
-                const typing = snapshot.val();
-                const indicator = document.getElementById('danrajTyping');
-                if (typing?.isTyping && Date.now() - typing.timestamp < 3000) {
-                    indicator.style.display = 'inline';
-                } else {
-                    indicator.style.display = 'none';
-                }
-            });
+        function setupTypingListener(user) {
+            if (user === 'parnjal') {
+                database.ref('typing/danraj_to_parnjal').on('value', (snapshot) => {
+                    const typing = snapshot.val();
+                    const indicator = document.getElementById('parnjalTypingMobile');
+                    if (typing?.isTyping && Date.now() - typing.timestamp < 3000) {
+                        indicator.style.display = 'inline';
+                    } else {
+                        indicator.style.display = 'none';
+                    }
+                });
+            } else {
+                database.ref('typing/parnjal_to_danraj').on('value', (snapshot) => {
+                    const typing = snapshot.val();
+                    const indicator = document.getElementById('danrajTypingMobile');
+                    if (typing?.isTyping && Date.now() - typing.timestamp < 3000) {
+                        indicator.style.display = 'inline';
+                    } else {
+                        indicator.style.display = 'none';
+                    }
+                });
+            }
         }
+        
+        // ===== IMAGE HANDLERS =====
+        window.handleParnjalImage = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image size should be less than 5MB');
+                return;
+            }
+            
+            parnjalSelectedImage = file;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('parnjalPreviewMobile').src = e.target.result;
+                document.getElementById('parnjalPreviewNameMobile').textContent = 
+                    file.name.length > 20 ? file.name.substring(0,20) + '...' : file.name;
+                document.getElementById('parnjalImagePreviewMobile').classList.add('active');
+            };
+            reader.readAsDataURL(file);
+        };
         
         window.handleDanrajImage = function(e) {
             const file = e.target.files[0];
@@ -1325,37 +1018,40 @@
             
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('danrajPreview').src = e.target.result;
-                document.getElementById('danrajPreviewName').textContent = file.name.length > 20 ? file.name.substring(0,20) + '...' : file.name;
-                document.getElementById('danrajImagePreview').classList.add('active');
+                document.getElementById('danrajPreviewMobile').src = e.target.result;
+                document.getElementById('danrajPreviewNameMobile').textContent = 
+                    file.name.length > 20 ? file.name.substring(0,20) + '...' : file.name;
+                document.getElementById('danrajImagePreviewMobile').classList.add('active');
             };
             reader.readAsDataURL(file);
         };
         
+        window.clearParnjalImage = function() {
+            parnjalSelectedImage = null;
+            document.getElementById('parnjalImagePreviewMobile').classList.remove('active');
+            document.getElementById('parnjalFileInputMobile').value = '';
+        };
+        
         window.clearDanrajImage = function() {
             danrajSelectedImage = null;
-            document.getElementById('danrajImagePreview').classList.remove('active');
-            document.getElementById('danrajFileInput').value = '';
+            document.getElementById('danrajImagePreviewMobile').classList.remove('active');
+            document.getElementById('danrajFileInputMobile').value = '';
+        };
+        
+        // ===== EMOJI PICKER =====
+        window.toggleParnjalEmoji = function() {
+            const picker = document.getElementById('parnjalEmojiPickerMobile');
+            parnjalEmojiActive = !parnjalEmojiActive;
+            picker.classList.toggle('active');
         };
         
         window.toggleDanrajEmoji = function() {
-            const picker = document.getElementById('danrajEmojiPicker');
+            const picker = document.getElementById('danrajEmojiPickerMobile');
             danrajEmojiActive = !danrajEmojiActive;
             picker.classList.toggle('active');
         };
         
-        // ===== UTILITY FUNCTIONS =====
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight) + 'px';
-        }
-        
-        function escapeHTML(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
+        // ===== KEYBOARD HANDLERS =====
         window.handleParnjalKeyPress = function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -1370,32 +1066,49 @@
             }
         };
         
+        // ===== UTILITY FUNCTIONS =====
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+        
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        window.autoResize = autoResize;
+        
         // ===== EMOJI PICKER SETUP =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Parnjal Emoji Picker
             setTimeout(() => {
-                const parnjalPicker = document.querySelector('#parnjalEmojiPicker emoji-picker');
+                // Parnjal emoji picker
+                const parnjalPicker = document.querySelector('#parnjalEmojiPickerMobile emoji-picker');
                 if (parnjalPicker) {
                     parnjalPicker.addEventListener('emoji-click', event => {
-                        document.getElementById('parnjalInput').value += event.detail.unicode;
-                        autoResize(document.getElementById('parnjalInput'));
+                        const input = document.getElementById('parnjalInputMobile');
+                        input.value += event.detail.unicode;
+                        autoResize(input);
                     });
                 }
                 
-                const danrajPicker = document.querySelector('#danrajEmojiPicker emoji-picker');
+                // Danraj emoji picker
+                const danrajPicker = document.querySelector('#danrajEmojiPickerMobile emoji-picker');
                 if (danrajPicker) {
                     danrajPicker.addEventListener('emoji-click', event => {
-                        document.getElementById('danrajInput').value += event.detail.unicode;
-                        autoResize(document.getElementById('danrajInput'));
+                        const input = document.getElementById('danrajInputMobile');
+                        input.value += event.detail.unicode;
+                        autoResize(input);
                     });
                 }
-            }, 1000);
+            }, 500);
         });
         
-        // Close emoji pickers
+        // Close emoji pickers when clicking outside
         document.addEventListener('click', function(e) {
             if (parnjalEmojiActive) {
-                const picker = document.getElementById('parnjalEmojiPicker');
+                const picker = document.getElementById('parnjalEmojiPickerMobile');
                 if (!picker.contains(e.target) && !e.target.classList.contains('fa-smile')) {
                     picker.classList.remove('active');
                     parnjalEmojiActive = false;
@@ -1403,7 +1116,7 @@
             }
             
             if (danrajEmojiActive) {
-                const picker = document.getElementById('danrajEmojiPicker');
+                const picker = document.getElementById('danrajEmojiPickerMobile');
                 if (!picker.contains(e.target) && !e.target.classList.contains('fa-smile')) {
                     picker.classList.remove('active');
                     danrajEmojiActive = false;
@@ -1411,7 +1124,12 @@
             }
         });
         
-        window.autoResize = autoResize;
+        // Prevent body scroll when emoji picker is open
+        document.addEventListener('touchmove', function(e) {
+            if (parnjalEmojiActive || danrajEmojiActive) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
