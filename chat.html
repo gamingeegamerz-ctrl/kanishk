@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-88">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Research Collaboration Hub</title>
     
@@ -19,21 +19,39 @@
     <!-- Master Styles -->
     <link rel="stylesheet" href="style.css">
     
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <style>
-        /* Premium Chat Theme */
+        /* Premium Chat Theme - Complete Fixed Version */
         :root {
-            --chat-bg: rgba(15, 15, 25, 0.95);
-            --chat-sidebar: rgba(20, 20, 35, 0.98);
+            --chat-bg: #0a0a0f;
+            --chat-sidebar: #0f0f15;
             --chat-primary: #10b981;
             --chat-primary-dark: #059669;
             --message-self: linear-gradient(135deg, #10b981, #059669);
-            --message-other: rgba(255, 255, 255, 0.1);
+            --message-other: rgba(255, 255, 255, 0.08);
             --typing-indicator: #10b981;
+            --neutral-400: #a0a0a0;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-800: #262626;
+            --primary-600: #4f46e5;
+            --primary-800: #3730a3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
+            font-family: 'Inter', sans-serif;
             background: var(--chat-bg);
             overflow: hidden;
+            height: 100vh;
+            color: white;
         }
         
         .chat-application {
@@ -42,6 +60,7 @@
             width: 100vw;
             position: relative;
             overflow: hidden;
+            background: var(--chat-bg);
         }
         
         /* Sidebar */
@@ -68,7 +87,7 @@
         .user-avatar-large {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary-600), var(--primary-800));
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
             border-radius: 18px;
             display: flex;
             align-items: center;
@@ -225,6 +244,7 @@
             display: flex;
             flex-direction: column;
             background: var(--chat-bg);
+            position: relative;
         }
         
         .chat-header {
@@ -269,6 +289,10 @@
             font-size: 0.875rem;
         }
         
+        .typing-indicator.active {
+            display: flex;
+        }
+        
         .typing-indicator span {
             display: flex;
             gap: 0.25rem;
@@ -276,6 +300,7 @@
         
         .typing-indicator span i {
             animation: typingBounce 1.4s infinite;
+            font-size: 0.5rem;
         }
         
         .typing-indicator span i:nth-child(2) {
@@ -321,6 +346,7 @@
         .message-wrapper {
             display: flex;
             margin-bottom: 0.5rem;
+            animation: messagePop 0.3s ease;
         }
         
         .message-wrapper.self {
@@ -332,7 +358,7 @@
             padding: 0.875rem 1.25rem;
             border-radius: 20px;
             position: relative;
-            animation: messagePop 0.3s ease;
+            word-break: break-word;
         }
         
         @keyframes messagePop {
@@ -341,13 +367,13 @@
         }
         
         .message-wrapper.self .message-bubble {
-            background: var(--message-self);
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             border-bottom-right-radius: 4px;
         }
         
         .message-wrapper.other .message-bubble {
-            background: var(--message-other);
+            background: rgba(255, 255, 255, 0.08);
             color: white;
             border-bottom-left-radius: 4px;
             backdrop-filter: blur(10px);
@@ -512,6 +538,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
         
         .send-btn:hover {
@@ -594,6 +621,19 @@
             margin-bottom: 0;
         }
         
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--neutral-400);
+        }
+        
+        .welcome-message i {
+            font-size: 3rem;
+            color: var(--chat-primary);
+            margin-bottom: 1rem;
+        }
+        
         @media (max-width: 768px) {
             .chat-sidebar {
                 display: none;
@@ -610,7 +650,7 @@
     </style>
 </head>
 <body>
-    <!-- Login Overlay (Hidden by default) -->
+    <!-- Login Overlay -->
     <div id="loginOverlay" class="login-overlay">
         <div class="login-card" data-aos="fade-up">
             <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
@@ -636,7 +676,7 @@
         </div>
     </div>
     
-    <!-- Main Chat Application (Hidden by default) -->
+    <!-- Main Chat Application -->
     <div id="chatApp" class="chat-application" style="display: none;">
         <!-- Sidebar -->
         <div class="chat-sidebar">
@@ -707,7 +747,14 @@
             </div>
             
             <!-- Messages Container -->
-            <div class="messages-container" id="messagesContainer"></div>
+            <div id="messagesContainer" class="messages-container">
+                <!-- Welcome Message (Shows when no messages) -->
+                <div id="welcomeMessage" class="welcome-message">
+                    <i class="fas fa-comments"></i>
+                    <h3>Welcome to Research Collab</h3>
+                    <p>Start your research discussion with your partner</p>
+                </div>
+            </div>
             
             <!-- Chat Input -->
             <div class="chat-input-area">
@@ -732,26 +779,64 @@
         </div>
     </div>
     
-    <!-- Firebase Config & Chat Engine -->
-    <script src="chat-engine.js"></script>
-    
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Chat Engine JavaScript -->
     <script>
-        AOS.init();
+        // ============================================
+        //   ADVANCED CHAT ENGINE v2.0 - FIXED VERSION
+        //   Complete Real-Time Chat Functionality
+        //   Designed by: Kanishk Ghongade
+        // ============================================
         
-        // Auto-resize textarea
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight) + 'px';
+        // ----- FIREBASE CONFIGURATION -----
+        // ⚠️ IMPORTANT: APNI FIREBASE CONFIG YAHAN PASTE KARO!
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_AUTH_DOMAIN_HERE",
+            databaseURL: "YOUR_DATABASE_URL_HERE",
+            projectId: "YOUR_PROJECT_ID_HERE",
+            storageBucket: "YOUR_STORAGE_BUCKET_HERE",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID_HERE",
+            appId: "YOUR_APP_ID_HERE"
+        };
+        
+        // Initialize Firebase
+        let database = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log("✅ Firebase initialized successfully!");
+        } catch (error) {
+            console.error("❌ Firebase initialization error:", error);
         }
         
-        // Global variables
+        // ----- GLOBAL VARIABLES -----
         let currentUser = null;
         let currentUserId = null;
+        let currentTypingTimeout = null;
         
-        // Login function
+        // ----- INITIALIZATION -----
+        function initializeChat() {
+            if (!currentUser || !database) {
+                console.log("⏳ Waiting for user login and Firebase...");
+                return;
+            }
+            
+            console.log(`🚀 Chat initialized for ${currentUser}`);
+            
+            // Load messages
+            loadMessages();
+            
+            // Setup typing indicator
+            setupTypingIndicator();
+            
+            // Setup presence
+            setupPresence();
+            
+            // Hide welcome message when messages exist
+            checkWelcomeMessage();
+        }
+        
+        // ----- LOGIN FUNCTION -----
         function loginUser(userType) {
             if (userType === 'user1') {
                 currentUser = 'Researcher A';
@@ -772,11 +857,400 @@
             // Initialize chat
             initializeChat();
         }
+        
+        // ----- SEND MESSAGE -----
+        window.sendMessage = function() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || !currentUser || !database) {
+                alert('⚠️ Firebase config sahi se dalo! Chat kaam nahi karega bina Firebase ke.');
+                return;
+            }
+            
+            const messageData = {
+                userId: currentUserId,
+                userName: currentUser,
+                text: message,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                seen: false,
+                delivered: true,
+                edited: false
+            };
+            
+            // Push to Firebase
+            database.ref('messages').push(messageData)
+                .then(() => {
+                    input.value = '';
+                    autoResize(input);
+                    stopTyping();
+                    hideWelcomeMessage();
+                })
+                .catch(error => {
+                    console.error('Error sending message:', error);
+                    alert('❌ Message send nahi hua! Firebase config check karo.');
+                });
+        };
+        
+        // ----- LOAD MESSAGES -----
+        function loadMessages() {
+            if (!database) return;
+            
+            const messagesRef = database.ref('messages');
+            
+            // Load existing messages
+            messagesRef.once('value', (snapshot) => {
+                const messages = snapshot.val();
+                if (messages) {
+                    const messageCount = Object.keys(messages).length;
+                    if (messageCount > 0) {
+                        hideWelcomeMessage();
+                    }
+                    
+                    Object.keys(messages).forEach(key => {
+                        displayMessage(messages[key], key);
+                    });
+                }
+            });
+            
+            // Listen for new messages
+            messagesRef.on('child_added', (snapshot) => {
+                const message = snapshot.val();
+                const messageId = snapshot.key;
+                
+                if (!document.getElementById(`msg-${messageId}`)) {
+                    displayMessage(message, messageId);
+                    hideWelcomeMessage();
+                }
+                
+                // Mark as seen if visible
+                if (message.userId !== currentUserId) {
+                    markMessageAsSeen(messageId);
+                }
+            });
+            
+            // Listen for message updates
+            messagesRef.on('child_changed', (snapshot) => {
+                const message = snapshot.val();
+                const messageId = snapshot.key;
+                updateMessageDisplay(messageId, message);
+            });
+            
+            // Listen for message deletions
+            messagesRef.on('child_removed', (snapshot) => {
+                const messageId = snapshot.key;
+                removeMessageDisplay(messageId);
+            });
+        }
+        
+        // ----- DISPLAY MESSAGE -----
+        function displayMessage(message, messageId) {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+            
+            const isSelf = message.userId === currentUserId;
+            
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = `message-wrapper ${isSelf ? 'self' : 'other'}`;
+            messageWrapper.id = `msg-${messageId}`;
+            
+            let time = 'Just now';
+            if (message.timestamp) {
+                const date = new Date(message.timestamp);
+                time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            
+            let messageHTML = '';
+            
+            if (message.deleted) {
+                messageHTML = `
+                    <div class="message-bubble">
+                        <div class="message-text" style="font-style: italic; color: var(--neutral-500);">
+                            <i class="fas fa-trash"></i> This message was deleted
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageHTML = `
+                    <div class="message-bubble">
+                        ${!isSelf ? `<div class="message-sender">${message.userName || 'User'}</div>` : ''}
+                        <div class="message-text">${escapeHTML(message.text)}</div>
+                        <div class="message-meta">
+                            <span class="message-time">${time}</span>
+                            ${isSelf ? `
+                                <span class="message-status">
+                                    ${message.seen ? '<i class="fas fa-check-double seen" title="Seen"></i>' : '<i class="fas fa-check" title="Delivered"></i>'}
+                                </span>
+                            ` : ''}
+                        </div>
+                        <div class="message-actions">
+                            ${isSelf ? `
+                                <button class="message-action-btn" onclick="editMessage('${messageId}')" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="message-action-btn delete" onclick="deleteMessage('${messageId}')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            messageWrapper.innerHTML = messageHTML;
+            container.appendChild(messageWrapper);
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // ----- UPDATE MESSAGE DISPLAY -----
+        function updateMessageDisplay(messageId, message) {
+            const messageElement = document.getElementById(`msg-${messageId}`);
+            if (!messageElement) return;
+            
+            if (message.deleted) {
+                const messageBubble = messageElement.querySelector('.message-bubble');
+                if (messageBubble) {
+                    messageBubble.innerHTML = `
+                        <div class="message-text" style="font-style: italic; color: var(--neutral-500);">
+                            <i class="fas fa-trash"></i> This message was deleted
+                        </div>
+                    `;
+                }
+            } else if (message.edited) {
+                const textElement = messageElement.querySelector('.message-text');
+                if (textElement) {
+                    textElement.innerHTML = escapeHTML(message.text) + ' <span style="font-size: 0.75rem; opacity: 0.7;">(edited)</span>';
+                }
+                
+                const statusElement = messageElement.querySelector('.message-status');
+                if (statusElement && message.seen) {
+                    statusElement.innerHTML = '<i class="fas fa-check-double seen" title="Seen"></i>';
+                }
+            } else {
+                const statusElement = messageElement.querySelector('.message-status');
+                if (statusElement && message.seen) {
+                    statusElement.innerHTML = '<i class="fas fa-check-double seen" title="Seen"></i>';
+                }
+            }
+        }
+        
+        // ----- REMOVE MESSAGE DISPLAY -----
+        function removeMessageDisplay(messageId) {
+            const messageElement = document.getElementById(`msg-${messageId}`);
+            if (messageElement) {
+                messageElement.remove();
+            }
+        }
+        
+        // ----- DELETE MESSAGE -----
+        window.deleteMessage = function(messageId) {
+            if (!database) return;
+            
+            if (confirm('Delete this message?')) {
+                database.ref(`messages/${messageId}`).update({
+                    deleted: true,
+                    text: '[Deleted]'
+                });
+            }
+        };
+        
+        // ----- EDIT MESSAGE -----
+        window.editMessage = function(messageId) {
+            if (!database) return;
+            
+            const messageElement = document.getElementById(`msg-${messageId}`);
+            const messageText = messageElement.querySelector('.message-text').innerText.replace('(edited)', '').trim();
+            
+            const newText = prompt('Edit message:', messageText);
+            if (newText && newText.trim() !== '') {
+                database.ref(`messages/${messageId}`).update({
+                    text: newText.trim(),
+                    edited: true,
+                    editTimestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+        };
+        
+        // ----- TYPING INDICATOR -----
+        function setupTypingIndicator() {
+            if (!database || !currentUserId) return;
+            
+            const input = document.getElementById('messageInput');
+            
+            input.addEventListener('input', () => {
+                if (!currentUser) return;
+                
+                // Clear previous timeout
+                if (currentTypingTimeout) {
+                    clearTimeout(currentTypingTimeout);
+                }
+                
+                // Set typing status
+                database.ref('typing/' + currentUserId).set({
+                    isTyping: true,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                
+                // Set timeout to stop typing
+                currentTypingTimeout = setTimeout(() => {
+                    stopTyping();
+                }, 2000);
+            });
+            
+            // Listen for other user's typing
+            const otherUserId = currentUserId === 'user1' ? 'user2' : 'user1';
+            database.ref('typing/' + otherUserId).on('value', (snapshot) => {
+                const typing = snapshot.val();
+                const indicator = document.getElementById('typingIndicator');
+                
+                if (typing && typing.isTyping) {
+                    const timeDiff = Date.now() - (typing.timestamp || 0);
+                    if (timeDiff < 3000) {
+                        indicator.style.display = 'flex';
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.style.display = 'none';
+                        indicator.classList.remove('active');
+                    }
+                } else {
+                    indicator.style.display = 'none';
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+        
+        function stopTyping() {
+            if (database && currentUserId) {
+                database.ref('typing/' + currentUserId).set({
+                    isTyping: false,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+        }
+        
+        // ----- MARK MESSAGE AS SEEN -----
+        function markMessageAsSeen(messageId) {
+            if (!database) return;
+            
+            database.ref(`messages/${messageId}`).update({
+                seen: true,
+                seenTimestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+        
+        // ----- PRESENCE SYSTEM -----
+        function setupPresence() {
+            if (!database || !currentUserId) return;
+            
+            const userStatusRef = database.ref('status/' + currentUserId);
+            
+            userStatusRef.set({
+                online: true,
+                lastSeen: firebase.database.ServerValue.TIMESTAMP
+            });
+            
+            // Set offline on page unload
+            window.addEventListener('beforeunload', () => {
+                userStatusRef.set({
+                    online: false,
+                    lastSeen: firebase.database.ServerValue.TIMESTAMP
+                });
+            });
+        }
+        
+        // ----- WELCOME MESSAGE HANDLING -----
+        function hideWelcomeMessage() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            if (welcomeMsg) {
+                welcomeMsg.style.display = 'none';
+            }
+        }
+        
+        function checkWelcomeMessage() {
+            if (!database) return;
+            
+            database.ref('messages').once('value', (snapshot) => {
+                const messages = snapshot.val();
+                if (messages && Object.keys(messages).length > 0) {
+                    hideWelcomeMessage();
+                }
+            });
+        }
+        
+        // ----- ROMANTIC SURPRISE -----
+        window.sendRomanticMessage = function() {
+            const romanticMessages = [
+                "✨ Thinking of you during my research break...",
+                "📚 This chapter reminds me of you - beautiful and complex",
+                "💕 Collaboration has never felt this special",
+                "🎓 You're the best part of my academic journey",
+                "💫 Every algorithm leads back to you"
+            ];
+            
+            const randomMsg = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
+            
+            const input = document.getElementById('messageInput');
+            input.value = randomMsg;
+            autoResize(input);
+        };
+        
+        // ----- UTILITIES -----
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+        
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ----- CHECK FIREBASE CONFIG -----
+        window.checkFirebaseConfig = function() {
+            const config = firebaseConfig;
+            if (config.apiKey === "YOUR_API_KEY_HERE") {
+                alert('⚠️ Firebase config nahi dali! ChatEngine.js mein apni Firebase config paste karo!');
+                return false;
+            }
+            return true;
+        };
+        
+        // Auto-resize on page load
+        window.onload = function() {
+            const textarea = document.getElementById('messageInput');
+            if (textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+            
+            // Check Firebase config
+            setTimeout(() => {
+                if (firebaseConfig.apiKey === "YOUR_API_KEY_HERE") {
+                    console.warn('⚠️ Firebase config pending - Chat will not work!');
+                }
+            }, 1000);
+        };
+        
+        // Make functions global
+        window.loginUser = loginUser;
+        window.autoResize = autoResize;
+    </script>
+    
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
     </script>
     
     <!-- Copyright Footer -->
     <div style="position: fixed; bottom: 1rem; right: 1rem; color: rgba(255,255,255,0.2); font-size: 0.75rem; z-index: 10000; pointer-events: none;">
-        <i class="far fa-copyright"></i> 2026 • Designed by Kanishk Ghongade
+        <i class="far fa-copyright"></i> 2026 • Designed by <span style="color: rgba(255,255,255,0.5);">Kanishk Ghongade</span>
     </div>
 </body>
 </html>
