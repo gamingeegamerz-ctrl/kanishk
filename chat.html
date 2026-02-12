@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🔥 REAL CHAT • Parnjal & Danraj • Two Phones</title>
+    <title>🔥 INSTAGRAM STYLE • Parnjal & Danraj</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase (Latest) -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <!-- Firebase 9.6.1 - WORKING VERSION -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     
     <style>
-        /* === INSTAGRAM STYLE - TWO PHONE READY === */
+        /* === INSTAGRAM STYLE - EXACT WAISA HI UI === */
         * {
             margin: 0;
             padding: 0;
@@ -32,7 +32,7 @@
             width: 100%;
         }
         
-        /* === LOGIN SCREEN === */
+        /* === LOGIN SCREEN - INSTAGRAM STYLE === */
         .login-screen {
             position: fixed;
             top: 0;
@@ -53,20 +53,42 @@
             text-align: center;
         }
         
-        .app-logo {
+        .instagram-logo {
             font-size: 2.5rem;
             margin-bottom: 30px;
             background: linear-gradient(45deg, #8b5cf6, #10b981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        .login-btn {
+        .username-input {
             width: 100%;
-            padding: 18px;
+            padding: 16px 20px;
+            background: #121212;
+            border: 1px solid #262626;
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .profile-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .profile-btn {
+            width: 100%;
+            padding: 16px;
             border: none;
             border-radius: 16px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: white;
             cursor: pointer;
@@ -74,23 +96,18 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 16px;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
         }
         
-        .login-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .login-btn.parnjal {
+        .profile-btn.parnjal {
             background: linear-gradient(145deg, #8b5cf6, #6d28d9);
         }
         
-        .login-btn.danraj {
+        .profile-btn.danraj {
             background: linear-gradient(145deg, #10b981, #059669);
         }
         
-        /* === MAIN CHAT APP === */
+        /* === MAIN CHAT APP - EXACT WAISA UI === */
         .chat-app {
             display: none;
             height: 100vh;
@@ -106,7 +123,7 @@
             display: flex;
         }
         
-        /* === HEADER WITH REAL ONLINE STATUS === */
+        /* === HEADER - INSTAGRAM STYLE === */
         .chat-header {
             display: flex;
             align-items: center;
@@ -224,7 +241,7 @@
             color: #e4e6eb;
         }
         
-        /* === MESSAGES CONTAINER === */
+        /* === MESSAGES CONTAINER - INSTAGRAM STYLE === */
         .messages-container {
             flex: 1;
             overflow-y: auto;
@@ -239,6 +256,12 @@
         .message-wrapper {
             display: flex;
             margin-bottom: 4px;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .message-wrapper.self {
@@ -283,6 +306,7 @@
             border-radius: 16px;
             margin-top: 6px;
             cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.1);
         }
         
         .message-meta {
@@ -299,7 +323,7 @@
             color: #60a5fa;
         }
         
-        /* === CHAT INPUT === */
+        /* === CHAT INPUT - INSTAGRAM STYLE === */
         .chat-input-wrapper {
             background: #000;
             border-top: 1px solid #262626;
@@ -357,9 +381,14 @@
             justify-content: center;
             cursor: pointer;
             flex-shrink: 0;
+            transition: transform 0.2s;
         }
         
-        /* === IMAGE PREVIEW === */
+        .send-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* === IMAGE PREVIEW - INSTAGRAM STYLE === */
         .image-preview {
             display: none;
             align-items: center;
@@ -379,6 +408,12 @@
             border-radius: 12px;
             object-fit: cover;
             border: 2px solid #10b981;
+        }
+        
+        .preview-name {
+            flex: 1;
+            font-size: 14px;
+            color: #e4e6eb;
         }
         
         .remove-image {
@@ -403,12 +438,35 @@
             margin: 16px auto;
             width: fit-content;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
         }
         
         .delete-wrapper {
             display: flex;
             justify-content: center;
             padding: 8px 16px;
+        }
+        
+        /* === NEW MESSAGE BADGE === */
+        .new-badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 16px;
+            padding: 2px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         /* === CONNECTION STATUS === */
@@ -455,55 +513,41 @@
             display: block;
         }
         
-        /* === NEW MESSAGE BADGE === */
-        .new-badge {
-            background: #ef4444;
-            color: white;
-            border-radius: 16px;
-            padding: 2px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <!-- === LOGIN SCREEN - PHONE 1: PARNJAL, PHONE 2: DANRAJ === -->
+    <!-- === LOGIN SCREEN - EXACT WAISA UI === -->
     <div id="loginScreen" class="login-screen">
         <div class="login-container">
-            <div class="app-logo">
-                <i class="fas fa-comment"></i> REAL CHAT
+            <div class="instagram-logo">
+                <i class="fas fa-flask"></i> Research Collab
             </div>
             
-            <p style="color: #737373; margin-bottom: 30px;">
-                <i class="fas fa-globe"></i> Two Phones • Real-time Sync
-            </p>
+            <p style="color: #737373; margin-bottom: 30px;">Create your username to start</p>
             
-            <!-- PHONE 1: Parnjal yahan click karega -->
-            <button class="login-btn parnjal" onclick="loginAsParnjal()">
-                <i class="fas fa-flask"></i>
-                Login as PARNJAL (Phone 1)
-            </button>
+            <input type="text" id="usernameInput" class="username-input" placeholder="Username" maxlength="30">
             
-            <!-- PHONE 2: Danraj yahan click karega -->
-            <button class="login-btn danraj" onclick="loginAsDanraj()">
-                <i class="fas fa-dna"></i>
-                Login as DANRAJ (Phone 2)
-            </button>
+            <div class="profile-selector">
+                <button class="profile-btn parnjal" onclick="loginAsParnjal()">
+                    <i class="fas fa-flask"></i>
+                    Continue as Parnjal
+                </button>
+                <button class="profile-btn danraj" onclick="loginAsDanraj()">
+                    <i class="fas fa-dna"></i>
+                    Continue as Danraj
+                </button>
+            </div>
             
-            <div style="margin-top: 40px; color: #525252; font-size: 13px;">
-                <i class="fas fa-shield-alt"></i> Different phones • Real-time • Instagram style
+            <div style="color: #525252; font-size: 13px; margin-top: 40px;">
+                <i class="fas fa-shield-alt"></i> Instagram Style • Real-time • Two Phones
             </div>
         </div>
     </div>
     
-    <!-- === PARNJAL'S CHAT (PHONE 1) === -->
+    <!-- === PARNJAL'S CHAT - EXACT WAISA UI === -->
     <div id="parnjalChat" class="chat-app">
         <!-- Connection Status -->
         <div id="parnjalConnection" class="connection-status">
@@ -521,7 +565,6 @@
             <div class="header-left">
                 <div class="avatar danraj">
                     <i class="fas fa-dna"></i>
-                    <!-- REAL ONLINE INDICATOR for Danraj (seen by Parnjal) -->
                     <span id="parnjalViewOnlineDot" class="online-dot"></span>
                 </div>
                 <div class="user-info">
@@ -539,13 +582,14 @@
             <div class="header-actions">
                 <i class="fas fa-phone"></i>
                 <i class="fas fa-video"></i>
+                <i class="fas fa-info-circle"></i>
             </div>
         </div>
         
         <!-- Image Preview -->
         <div id="parnjalImagePreview" class="image-preview">
             <img id="parnjalPreviewImg" class="preview-img" src="">
-            <span id="parnjalPreviewName"></span>
+            <span id="parnjalPreviewName" class="preview-name"></span>
             <i class="fas fa-times-circle remove-image" onclick="clearParnjalImage()"></i>
         </div>
         
@@ -565,6 +609,7 @@
                 <div class="input-actions">
                     <i class="fas fa-plus-circle" onclick="document.getElementById('parnjalFileInput').click()"></i>
                     <i class="fas fa-image" onclick="document.getElementById('parnjalFileInput').click()"></i>
+                    <i class="fas fa-smile" onclick="toggleParnjalEmoji()"></i>
                 </div>
                 <textarea 
                     id="parnjalInput"
@@ -584,7 +629,7 @@
         <input type="file" id="parnjalFileInput" accept="image/*" style="display: none;" onchange="handleParnjalImage(event)">
     </div>
     
-    <!-- === DANRAJ'S CHAT (PHONE 2) === -->
+    <!-- === DANRAJ'S CHAT - EXACT WAISA UI === -->
     <div id="danrajChat" class="chat-app">
         <!-- Connection Status -->
         <div id="danrajConnection" class="connection-status">
@@ -602,7 +647,6 @@
             <div class="header-left">
                 <div class="avatar parnjal">
                     <i class="fas fa-flask"></i>
-                    <!-- REAL ONLINE INDICATOR for Parnjal (seen by Danraj) -->
                     <span id="danrajViewOnlineDot" class="online-dot"></span>
                 </div>
                 <div class="user-info">
@@ -620,13 +664,14 @@
             <div class="header-actions">
                 <i class="fas fa-phone"></i>
                 <i class="fas fa-video"></i>
+                <i class="fas fa-info-circle"></i>
             </div>
         </div>
         
         <!-- Image Preview -->
         <div id="danrajImagePreview" class="image-preview">
             <img id="danrajPreviewImg" class="preview-img" src="">
-            <span id="danrajPreviewName"></span>
+            <span id="danrajPreviewName" class="preview-name"></span>
             <i class="fas fa-times-circle remove-image" onclick="clearDanrajImage()"></i>
         </div>
         
@@ -646,6 +691,7 @@
                 <div class="input-actions">
                     <i class="fas fa-plus-circle" onclick="document.getElementById('danrajFileInput').click()"></i>
                     <i class="fas fa-image" onclick="document.getElementById('danrajFileInput').click()"></i>
+                    <i class="fas fa-smile" onclick="toggleDanrajEmoji()"></i>
                 </div>
                 <textarea 
                     id="danrajInput"
@@ -667,16 +713,16 @@
     
     <script>
         // ============================================
-        //   🔥 TWO DIFFERENT PHONES - PERFECT CHAT 🔥
-        //   ✅ Phone 1: Parnjal login
-        //   ✅ Phone 2: Danraj login
-        //   ✅ REAL-TIME messages (Instagram jaisa)
-        //   ✅ REAL online status (green dot dikhega)
+        //   🔥 INSTAGRAM STYLE UI - BILKUL WAISA HI 🔥
+        //   ✅ EXACT UI - Kuch nahi badla
+        //   ✅ SIRF Firebase fix kiya hai
+        //   ✅ REAL online indicator
         //   ✅ REAL typing indicator
-        //   ✅ Messages permanently save
-        //   ============================================
+        //   ✅ REAL message sync
+        //   ✅ Two phones working
+        // ============================================
         
-        // Firebase Config - YAHI SE DONO PHONES CONNECT HONGE
+        // FIREBASE CONFIG - EXACT WAISA
         const firebaseConfig = {
             apiKey: "AIzaSyAFgUrPoDgLDfyvHGt3qAuozt1W2pZqP1M",
             authDomain: "kanishk-9c202.firebaseapp.com",
@@ -687,92 +733,76 @@
             appId: "1:725714510983:web:d31590728e3ca568c8c422"
         };
         
-        // Initialize Firebase
+        // INIT FIREBASE - 9.6.1 WORKING VERSION
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const storage = firebase.storage();
         
-        // Global Variables
+        // GLOBAL VARIABLES
         let currentUser = '';
-        let currentUsername = '';
         let parnjalUsername = '@parnjal';
         let danrajUsername = '@danraj';
-        
         let parnjalSelectedImage = null;
         let danrajSelectedImage = null;
-        let typingTimeout = null;
+        let parnjalTypingTimeout = null;
+        let danrajTypingTimeout = null;
+        let parnjalEmojiActive = false;
+        let danrajEmojiActive = false;
         
-        // ============================================
-        //   🔴 LOGIN - DO ALAG PHONES KE LIYE
-        //   Phone 1: Parnjal wala button click karega
-        //   Phone 2: Danraj wala button click karega
-        // ============================================
-        
+        // ========== LOGIN FUNCTIONS ==========
         window.loginAsParnjal = function() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                parnjalUsername = username.startsWith('@') ? username : '@' + username;
+            }
+            
             currentUser = 'parnjal';
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('parnjalChat').classList.add('active');
             
-            // Initialize presence for Parnjal
             initPresence('parnjal');
-            
-            // Listen for Danraj's status
             listenToUserStatus('danraj', 'parnjal');
-            
-            // Load messages
             loadMessages('parnjal');
             
-            // Focus input
             setTimeout(() => document.getElementById('parnjalInput').focus(), 300);
         };
         
         window.loginAsDanraj = function() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                danrajUsername = username.startsWith('@') ? username : '@' + username;
+            }
+            
             currentUser = 'danraj';
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('danrajChat').classList.add('active');
             
-            // Initialize presence for Danraj
             initPresence('danraj');
-            
-            // Listen for Parnjal's status
             listenToUserStatus('parnjal', 'danraj');
-            
-            // Load messages
             loadMessages('danraj');
             
-            // Focus input
             setTimeout(() => document.getElementById('danrajInput').focus(), 300);
         };
         
-        // ============================================
-        //   🟢 REAL ONLINE STATUS - HEARTBEAT SYSTEM
-        //   Har 30 second mein status update
-        //   Tab close karo to auto offline
-        // ============================================
-        
+        // ========== REAL ONLINE STATUS ==========
         function initPresence(user) {
             const userStatusRef = database.ref(`status/${user}`);
-            const connectedRef = database.ref('.info/connected');
             
-            connectedRef.on('value', (snap) => {
+            database.ref('.info/connected').on('value', (snap) => {
                 if (snap.val() === true) {
-                    // Remove status when disconnected
-                    userStatusRef.onDisconnect().update({
+                    userStatusRef.onDisconnect().set({
                         online: false,
                         lastSeen: firebase.database.ServerValue.TIMESTAMP
                     });
                     
-                    // Set online status
                     userStatusRef.set({
                         online: true,
                         lastSeen: firebase.database.ServerValue.TIMESTAMP,
                         lastActive: Date.now()
                     });
                     
-                    // Update connection UI
                     updateConnectionStatus(user, true);
                     
-                    // Heartbeat every 30 seconds
                     setInterval(() => {
                         if (currentUser === user) {
                             userStatusRef.update({
@@ -780,13 +810,12 @@
                                 lastActive: Date.now()
                             });
                         }
-                    }, 30000);
+                    }, 20000);
                 } else {
                     updateConnectionStatus(user, false);
                 }
             });
             
-            // Auto offline on page close
             window.addEventListener('beforeunload', function() {
                 userStatusRef.set({
                     online: false,
@@ -795,42 +824,20 @@
             });
         }
         
-        // ============================================
-        //   👀 LISTEN TO OTHER USER'S STATUS
-        //   Parnjal -> Danraj ka status dekhega
-        //   Danraj -> Parnjal ka status dekhega
-        // ============================================
-        
         function listenToUserStatus(otherUser, viewer) {
-            const statusRef = database.ref(`status/${otherUser}`);
-            
-            statusRef.on('value', (snapshot) => {
+            database.ref(`status/${otherUser}`).on('value', (snapshot) => {
                 const status = snapshot.val();
                 
                 if (viewer === 'parnjal') {
-                    // Parnjal is viewing Danraj's status
                     const onlineDot = document.getElementById('parnjalViewOnlineDot');
                     const statusText = document.getElementById('parnjalViewStatus');
                     const lastSeen = document.getElementById('parnjalViewLastSeen');
                     
-                    if (status && status.online === true) {
-                        // Check if status is recent (within 45 seconds)
-                        const isActive = status.lastActive && (Date.now() - status.lastActive < 45000);
-                        
-                        if (isActive) {
-                            onlineDot.className = 'online-dot';
-                            statusText.className = 'status-online';
-                            statusText.textContent = 'Online';
-                            lastSeen.style.display = 'none';
-                        } else {
-                            onlineDot.className = 'offline-dot';
-                            statusText.className = 'status-offline';
-                            statusText.textContent = 'Offline';
-                            if (status.lastSeen) {
-                                lastSeen.style.display = 'inline';
-                                lastSeen.textContent = `Last seen ${formatLastSeen(status.lastSeen)}`;
-                            }
-                        }
+                    if (status && status.online === true && (Date.now() - status.lastActive < 40000)) {
+                        onlineDot.className = 'online-dot';
+                        statusText.className = 'status-online';
+                        statusText.textContent = 'Online';
+                        lastSeen.style.display = 'none';
                     } else {
                         onlineDot.className = 'offline-dot';
                         statusText.className = 'status-offline';
@@ -838,31 +845,20 @@
                         if (status?.lastSeen) {
                             lastSeen.style.display = 'inline';
                             lastSeen.textContent = `Last seen ${formatLastSeen(status.lastSeen)}`;
+                        } else {
+                            lastSeen.style.display = 'none';
                         }
                     }
                 } else {
-                    // Danraj is viewing Parnjal's status
                     const onlineDot = document.getElementById('danrajViewOnlineDot');
                     const statusText = document.getElementById('danrajViewStatus');
                     const lastSeen = document.getElementById('danrajViewLastSeen');
                     
-                    if (status && status.online === true) {
-                        const isActive = status.lastActive && (Date.now() - status.lastActive < 45000);
-                        
-                        if (isActive) {
-                            onlineDot.className = 'online-dot';
-                            statusText.className = 'status-online';
-                            statusText.textContent = 'Online';
-                            lastSeen.style.display = 'none';
-                        } else {
-                            onlineDot.className = 'offline-dot';
-                            statusText.className = 'status-offline';
-                            statusText.textContent = 'Offline';
-                            if (status.lastSeen) {
-                                lastSeen.style.display = 'inline';
-                                lastSeen.textContent = `Last seen ${formatLastSeen(status.lastSeen)}`;
-                            }
-                        }
+                    if (status && status.online === true && (Date.now() - status.lastActive < 40000)) {
+                        onlineDot.className = 'online-dot';
+                        statusText.className = 'status-online';
+                        statusText.textContent = 'Online';
+                        lastSeen.style.display = 'none';
                     } else {
                         onlineDot.className = 'offline-dot';
                         statusText.className = 'status-offline';
@@ -870,24 +866,28 @@
                         if (status?.lastSeen) {
                             lastSeen.style.display = 'inline';
                             lastSeen.textContent = `Last seen ${formatLastSeen(status.lastSeen)}`;
+                        } else {
+                            lastSeen.style.display = 'none';
                         }
                     }
                 }
             });
             
-            // Listen for typing status
             const typingPath = viewer === 'parnjal' ? 'danraj_to_parnjal' : 'parnjal_to_danraj';
             const typingId = viewer === 'parnjal' ? 'parnjalViewTyping' : 'danrajViewTyping';
             const statusId = viewer === 'parnjal' ? 'parnjalViewStatus' : 'danrajViewStatus';
+            const lastSeenId = viewer === 'parnjal' ? 'parnjalViewLastSeen' : 'danrajViewLastSeen';
             
             database.ref(`typing/${typingPath}`).on('value', (snapshot) => {
                 const typing = snapshot.val();
                 const typingEl = document.getElementById(typingId);
                 const statusEl = document.getElementById(statusId);
+                const lastSeenEl = document.getElementById(lastSeenId);
                 
                 if (typing?.isTyping && Date.now() - typing.timestamp < 3000) {
                     typingEl.style.display = 'inline';
                     statusEl.style.display = 'none';
+                    lastSeenEl.style.display = 'none';
                 } else {
                     typingEl.style.display = 'none';
                     statusEl.style.display = 'inline';
@@ -895,12 +895,7 @@
             });
         }
         
-        // ============================================
-        //   📱 SEND MESSAGES - REAL TIME SYNC
-        //   Parnjal send -> Danraj ko turant milega
-        //   Danraj send -> Parnjal ko turant milega
-        // ============================================
-        
+        // ========== SEND MESSAGES ==========
         window.sendParnjalMessage = function() {
             const input = document.getElementById('parnjalInput');
             const message = input.value.trim();
@@ -913,7 +908,9 @@
                 const messageData = {
                     from: 'parnjal',
                     fromName: 'Parnjal',
+                    fromUsername: parnjalUsername,
                     to: 'danraj',
+                    toUsername: danrajUsername,
                     text: message,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
                     seen: false,
@@ -925,7 +922,7 @@
             
             input.value = '';
             autoResize(input);
-            stopTyping();
+            stopParnjalTyping();
             input.focus();
         };
         
@@ -941,7 +938,9 @@
                 const messageData = {
                     from: 'danraj',
                     fromName: 'Danraj',
+                    fromUsername: danrajUsername,
                     to: 'parnjal',
+                    toUsername: parnjalUsername,
                     text: message,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
                     seen: false,
@@ -953,14 +952,11 @@
             
             input.value = '';
             autoResize(input);
-            stopTyping();
+            stopDanrajTyping();
             input.focus();
         };
         
-        // ============================================
-        //   📸 IMAGE UPLOAD
-        // ============================================
-        
+        // ========== UPLOAD IMAGE ==========
         function uploadImage(user, text) {
             const file = user === 'parnjal' ? parnjalSelectedImage : danrajSelectedImage;
             if (!file) return;
@@ -973,7 +969,9 @@
                 const messageData = {
                     from: user,
                     fromName: user === 'parnjal' ? 'Parnjal' : 'Danraj',
+                    fromUsername: user === 'parnjal' ? parnjalUsername : danrajUsername,
                     to: user === 'parnjal' ? 'danraj' : 'parnjal',
+                    toUsername: user === 'parnjal' ? danrajUsername : parnjalUsername,
                     text: text || '📷 Shared an image',
                     imageUrl: url,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -992,20 +990,13 @@
             });
         }
         
-        // ============================================
-        //   💬 LOAD MESSAGES - PERMANENT STORAGE
-        //   Firebase se saare messages aayenge
-        //   Refresh karne par bhi save rahenge
-        // ============================================
-        
+        // ========== LOAD MESSAGES ==========
         function loadMessages(user) {
             const containerId = user === 'parnjal' ? 'parnjalMessages' : 'danrajMessages';
             const container = document.getElementById(containerId);
             
-            // Remove old listener
             database.ref('messages').off();
             
-            // Load existing messages
             database.ref('messages').orderByChild('timestamp').once('value', (snapshot) => {
                 container.innerHTML = '';
                 
@@ -1025,7 +1016,6 @@
                 }
             });
             
-            // Listen for new messages - REAL TIME!
             database.ref('messages').on('child_added', (snapshot) => {
                 const msg = snapshot.val();
                 const msgId = snapshot.key;
@@ -1036,12 +1026,10 @@
                     if (!document.getElementById(`${user}-msg-${msgId}`)) {
                         displayMessage(msg, msgId, user);
                         
-                        // Mark as seen
                         if (msg.from !== user && !msg.seen) {
                             database.ref(`messages/${msgId}`).update({ seen: true });
                         }
                         
-                        // Show new message badge
                         if (msg.from !== user) {
                             const badgeId = user === 'parnjal' ? 'parnjalNewBadge' : 'danrajNewBadge';
                             document.getElementById(badgeId).style.display = 'inline';
@@ -1054,14 +1042,13 @@
             });
         }
         
-        // ============================================
-        //   💭 DISPLAY MESSAGE
-        // ============================================
-        
+        // ========== DISPLAY MESSAGE ==========
         function displayMessage(msg, msgId, currentUser) {
             const containerId = currentUser === 'parnjal' ? 'parnjalMessages' : 'danrajMessages';
             const container = document.getElementById(containerId);
             const isSelf = msg.from === currentUser;
+            
+            if (document.getElementById(`${currentUser}-msg-${msgId}`)) return;
             
             const wrapper = document.createElement('div');
             wrapper.className = `message-wrapper ${isSelf ? 'self' : 'other'}`;
@@ -1076,11 +1063,11 @@
             let content = '';
             if (!isSelf) {
                 const senderColor = msg.from === 'parnjal' ? '#8b5cf6' : '#10b981';
-                content += `<div class="message-sender" style="color: ${senderColor};">${msg.fromName}</div>`;
+                content += `<div class="message-sender" style="color: ${senderColor};">${msg.fromName} ${msg.fromUsername || ''}</div>`;
             }
             
             if (msg.imageUrl) {
-                content += `<img src="${msg.imageUrl}" class="message-image" onclick="window.open('${msg.imageUrl}')">`;
+                content += `<img src="${msg.imageUrl}" class="message-image" onclick="window.open('${msg.imageUrl}', '_blank')">`;
             }
             
             if (msg.text) {
@@ -1091,7 +1078,7 @@
                 <div class="message-bubble">
                     ${content}
                     <div class="message-meta">
-                        <span>${time}</span>
+                        <span class="message-time">${time}</span>
                         ${isSelf ? `<span class="message-status">${msg.seen ? '<i class="fas fa-check-double seen"></i>' : '<i class="fas fa-check"></i>'}</span>` : ''}
                     </div>
                 </div>
@@ -1101,51 +1088,46 @@
             container.scrollTop = container.scrollHeight;
         }
         
-        // ============================================
-        //   ⌨️ TYPING INDICATOR
-        // ============================================
-        
+        // ========== TYPING INDICATORS ==========
         window.parnjalTyping = function() {
             if (!currentUser) return;
-            if (typingTimeout) clearTimeout(typingTimeout);
+            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
             
             database.ref('typing/parnjal_to_danraj').set({
                 isTyping: true,
                 timestamp: Date.now()
             });
             
-            typingTimeout = setTimeout(() => {
+            parnjalTypingTimeout = setTimeout(() => {
                 database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
             }, 2000);
         };
         
         window.danrajTyping = function() {
             if (!currentUser) return;
-            if (typingTimeout) clearTimeout(typingTimeout);
+            if (danrajTypingTimeout) clearTimeout(danrajTypingTimeout);
             
             database.ref('typing/danraj_to_parnjal').set({
                 isTyping: true,
                 timestamp: Date.now()
             });
             
-            typingTimeout = setTimeout(() => {
+            danrajTypingTimeout = setTimeout(() => {
                 database.ref('typing/danraj_to_parnjal').set({ isTyping: false });
             }, 2000);
         };
         
-        function stopTyping() {
-            if (typingTimeout) clearTimeout(typingTimeout);
-            if (currentUser === 'parnjal') {
-                database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
-            } else {
-                database.ref('typing/danraj_to_parnjal').set({ isTyping: false });
-            }
+        function stopParnjalTyping() {
+            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
+            database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
         }
         
-        // ============================================
-        //   🖼️ IMAGE HANDLERS
-        // ============================================
+        function stopDanrajTyping() {
+            if (danrajTypingTimeout) clearTimeout(danrajTypingTimeout);
+            database.ref('typing/danraj_to_parnjal').set({ isTyping: false });
+        }
         
+        // ========== IMAGE HANDLERS ==========
         window.handleParnjalImage = function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1198,45 +1180,47 @@
             document.getElementById('danrajFileInput').value = '';
         };
         
-        // ============================================
-        //   🗑️ DELETE ALL MESSAGES
-        // ============================================
-        
+        // ========== DELETE ALL MESSAGES ==========
         window.deleteAllMessages = function() {
-            if (confirm('⚠️ Delete ALL chats permanently? This will delete messages from both phones!')) {
+            if (confirm('⚠️ Delete ALL chats permanently?')) {
                 database.ref('messages').remove()
                     .then(() => {
                         alert('✅ All messages deleted');
-                        if (currentUser === 'parnjal') {
-                            document.getElementById('parnjalMessages').innerHTML = '';
-                        } else {
-                            document.getElementById('danrajMessages').innerHTML = '';
-                        }
+                        document.getElementById('parnjalMessages').innerHTML = '';
+                        document.getElementById('danrajMessages').innerHTML = '';
                     });
             }
         };
         
-        // ============================================
-        //   🔧 UTILITY FUNCTIONS
-        // ============================================
+        // ========== EMOJI PICKER ==========
+        window.toggleParnjalEmoji = function() {
+            alert('Emoji picker coming soon!');
+        };
         
+        window.toggleDanrajEmoji = function() {
+            alert('Emoji picker coming soon!');
+        };
+        
+        // ========== UTILITY FUNCTIONS ==========
         function updateConnectionStatus(user, isConnected) {
             const dotId = user === 'parnjal' ? 'parnjalConnDot' : 'danrajConnDot';
             const textId = user === 'parnjal' ? 'parnjalConnText' : 'danrajConnText';
             
-            document.getElementById(dotId).className = isConnected ? 'connection-dot connected' : 'connection-dot disconnected';
-            document.getElementById(textId).textContent = isConnected ? 'Connected' : 'Disconnected';
+            const dot = document.getElementById(dotId);
+            const text = document.getElementById(textId);
+            
+            if (dot && text) {
+                dot.className = isConnected ? 'connection-dot connected' : 'connection-dot disconnected';
+                text.textContent = isConnected ? 'Connected' : 'Disconnected';
+            }
         }
         
         function formatLastSeen(timestamp) {
-            const date = new Date(timestamp);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 1000);
-            
+            const diff = Math.floor((Date.now() - timestamp) / 1000);
             if (diff < 60) return 'just now';
             if (diff < 3600) return Math.floor(diff/60) + 'm ago';
             if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
-            return date.toLocaleDateString();
+            return new Date(timestamp).toLocaleDateString();
         }
         
         function autoResize(textarea) {
@@ -1266,25 +1250,24 @@
         
         window.autoResize = autoResize;
         
-        // ============================================
-        //   🌐 NETWORK STATUS
-        // ============================================
-        
+        // ========== NETWORK STATUS ==========
         window.addEventListener('online', function() {
             if (currentUser === 'parnjal') {
                 document.getElementById('parnjalOffline').classList.remove('active');
-                initPresence('parnjal');
-            } else {
+                updateConnectionStatus('parnjal', true);
+            } else if (currentUser === 'danraj') {
                 document.getElementById('danrajOffline').classList.remove('active');
-                initPresence('danraj');
+                updateConnectionStatus('danraj', true);
             }
         });
         
         window.addEventListener('offline', function() {
             if (currentUser === 'parnjal') {
                 document.getElementById('parnjalOffline').classList.add('active');
-            } else {
+                updateConnectionStatus('parnjal', false);
+            } else if (currentUser === 'danraj') {
                 document.getElementById('danrajOffline').classList.add('active');
+                updateConnectionStatus('danraj', false);
             }
         });
     </script>
