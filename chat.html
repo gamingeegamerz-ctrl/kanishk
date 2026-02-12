@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🔥 INSTAGRAM STYLE • Parnjal & Danraj</title>
-    
-    <!-- Font Awesome -->
+    <title>💬 Pranjal & Danraj Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Firebase 9.6.1 - WORKING VERSION -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    
+
     <style>
-        /* === INSTAGRAM STYLE - EXACT WAISA HI UI === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #000;
@@ -31,1245 +21,830 @@
             position: fixed;
             width: 100%;
         }
-        
-        /* === LOGIN SCREEN - INSTAGRAM STYLE === */
+
+        /* ===== LOGIN SCREEN ===== */
         .login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 20px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; align-items: center;
+            justify-content: center; z-index: 9999; padding: 20px;
         }
-        
-        .login-container {
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .instagram-logo {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
+        .login-container { max-width: 400px; width: 100%; text-align: center; }
+        .logo-title {
+            font-size: 2rem; font-weight: 800; margin-bottom: 8px;
             background: linear-gradient(45deg, #8b5cf6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        
-        .username-input {
-            width: 100%;
-            padding: 16px 20px;
-            background: #121212;
-            border: 1px solid #262626;
-            border-radius: 16px;
-            color: white;
-            font-size: 16px;
-            margin-bottom: 16px;
+        .logo-sub { color: #525252; font-size: 13px; margin-bottom: 32px; }
+
+        .login-field {
+            width: 100%; padding: 14px 16px; background: #121212;
+            border: 1px solid #262626; border-radius: 12px; color: white;
+            font-size: 16px; margin-bottom: 12px; outline: none;
+            transition: border-color 0.2s;
         }
-        
-        .profile-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        
+        .login-field:focus { border-color: #8b5cf6; }
+        .login-field::placeholder { color: #525252; }
+
+        .login-error { color: #ef4444; font-size: 13px; margin-bottom: 12px; min-height: 20px; }
+
+        .profile-btns { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
         .profile-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.2s ease;
+            width: 100%; padding: 15px; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 600; color: white; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: transform 0.15s, opacity 0.15s;
         }
-        
-        .profile-btn.parnjal {
-            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
-        }
-        
-        .profile-btn.danraj {
-            background: linear-gradient(145deg, #10b981, #059669);
-        }
-        
-        /* === MAIN CHAT APP - EXACT WAISA UI === */
+        .profile-btn:active { transform: scale(0.97); opacity: 0.85; }
+        .profile-btn.pranjal { background: linear-gradient(145deg, #8b5cf6, #6d28d9); }
+        .profile-btn.danraj   { background: linear-gradient(145deg, #10b981, #059669); }
+
+        .login-footer { color: #525252; font-size: 12px; margin-top: 32px; }
+
+        /* ===== CHAT APP ===== */
         .chat-app {
-            display: none;
-            height: 100vh;
-            width: 100vw;
-            background: #000;
-            position: fixed;
-            top: 0;
-            left: 0;
-            flex-direction: column;
+            display: none; height: 100vh; width: 100vw; background: #000;
+            position: fixed; top: 0; left: 0; flex-direction: column;
         }
-        
-        .chat-app.active {
-            display: flex;
-        }
-        
-        /* === HEADER - INSTAGRAM STYLE === */
+        .chat-app.active { display: flex; }
+
+        /* HEADER */
         .chat-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            background: #000;
-            border-bottom: 1px solid #262626;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            position: relative;
-        }
-        
-        .avatar.parnjal {
-            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
-        }
-        
-        .avatar.danraj {
-            background: linear-gradient(145deg, #10b981, #059669);
-        }
-        
-        /* === REAL ONLINE INDICATOR - PULSE ANIMATION === */
-        .online-dot {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 14px;
-            height: 14px;
-            background: #10b981;
-            border: 2px solid #000;
-            border-radius: 50%;
-            display: block;
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-        
-        .offline-dot {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 14px;
-            height: 14px;
-            background: #737373;
-            border: 2px solid #000;
-            border-radius: 50%;
-        }
-        
-        .user-info h2 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .status-text {
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .status-online {
-            color: #10b981;
-        }
-        
-        .status-offline {
-            color: #737373;
-        }
-        
-        .typing-indicator {
-            color: #10b981;
-            font-style: italic;
-            font-size: 13px;
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .last-seen {
-            color: #737373;
-            font-size: 12px;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .header-actions i {
-            font-size: 22px;
-            color: #e4e6eb;
-        }
-        
-        /* === MESSAGES CONTAINER - INSTAGRAM STYLE === */
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: #000;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .message-wrapper {
-            display: flex;
-            margin-bottom: 4px;
-            animation: fadeIn 0.2s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .message-wrapper.self {
-            justify-content: flex-end;
-        }
-        
-        .message-bubble {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 22px;
-            position: relative;
-            word-break: break-word;
-        }
-        
-        .message-wrapper.self .message-bubble {
-            background: #10b981;
-            color: white;
-            border-bottom-right-radius: 6px;
-        }
-        
-        .message-wrapper.other .message-bubble {
-            background: #262626;
-            color: white;
-            border-bottom-left-radius: 6px;
-        }
-        
-        .message-sender {
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #8b5cf6;
-        }
-        
-        .message-text {
-            font-size: 15px;
-            line-height: 1.5;
-        }
-        
-        .message-image {
-            max-width: 100%;
-            max-height: 250px;
-            border-radius: 16px;
-            margin-top: 6px;
-            cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-        
-        .message-meta {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 6px;
-            margin-top: 4px;
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-        }
-        
-        .message-status i.seen {
-            color: #60a5fa;
-        }
-        
-        /* === CHAT INPUT - INSTAGRAM STYLE === */
-        .chat-input-wrapper {
-            background: #000;
-            border-top: 1px solid #262626;
-            padding: 12px 16px;
-        }
-        
-        .input-container {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            background: #1a1a1a;
-            border: 1px solid #262626;
-            border-radius: 30px;
-            padding: 6px 6px 6px 16px;
-        }
-        
-        .input-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .input-actions i {
-            color: #737373;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        .message-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 16px;
-            padding: 10px 0;
-            max-height: 120px;
-            resize: none;
-            font-family: inherit;
-        }
-        
-        .message-input:focus {
-            outline: none;
-        }
-        
-        .send-btn {
-            width: 44px;
-            height: 44px;
-            background: #10b981;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 16px; background: #000; border-bottom: 1px solid #1a1a1a;
             flex-shrink: 0;
-            transition: transform 0.2s;
         }
-        
-        .send-btn:hover {
-            transform: scale(1.1);
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-avatar {
+            width: 46px; height: 46px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; position: relative; flex-shrink: 0;
         }
-        
-        /* === IMAGE PREVIEW - INSTAGRAM STYLE === */
-        .image-preview {
-            display: none;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: #1a1a1a;
-            border-bottom: 1px solid #262626;
+        .header-avatar.pranjal { background: linear-gradient(145deg, #8b5cf6, #6d28d9); }
+        .header-avatar.danraj   { background: linear-gradient(145deg, #10b981, #059669); }
+
+        .online-dot {
+            position: absolute; bottom: 1px; right: 1px;
+            width: 13px; height: 13px; background: #10b981;
+            border: 2.5px solid #000; border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(16,185,129,0.5);
+            animation: pulse-online 2s infinite;
         }
-        
-        .image-preview.active {
-            display: flex;
+        @keyframes pulse-online {
+            0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); }
+            70%  { box-shadow: 0 0 0 7px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
         }
-        
-        .preview-img {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 2px solid #10b981;
+        .offline-dot {
+            position: absolute; bottom: 1px; right: 1px;
+            width: 13px; height: 13px; background: #555;
+            border: 2.5px solid #000; border-radius: 50%;
         }
-        
-        .preview-name {
-            flex: 1;
-            font-size: 14px;
-            color: #e4e6eb;
-        }
-        
-        .remove-image {
-            color: #ef4444;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        /* === DELETE ALL BUTTON === */
-        .delete-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 16px auto;
-            width: fit-content;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .delete-btn:hover {
-            background: #dc2626;
-            transform: scale(1.05);
-        }
-        
-        .delete-wrapper {
-            display: flex;
-            justify-content: center;
-            padding: 8px 16px;
-        }
-        
-        /* === NEW MESSAGE BADGE === */
-        .new-badge {
-            background: #ef4444;
-            color: white;
-            border-radius: 16px;
-            padding: 2px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* === CONNECTION STATUS === */
-        .connection-status {
-            position: fixed;
-            top: 80px;
-            right: 16px;
-            background: rgba(0,0,0,0.8);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(5px);
-            border: 1px solid #262626;
-            z-index: 1000;
-        }
-        
-        .connection-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        
-        .connected {
-            background: #10b981;
-        }
-        
-        .disconnected {
-            background: #ef4444;
-        }
-        
+
+        .header-info h2 { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+        .header-status { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+        .status-online  { color: #10b981; }
+        .status-offline { color: #737373; }
+        .typing-anim    { color: #10b981; font-style: italic; animation: blink-type 1s infinite; }
+        @keyframes blink-type { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .last-seen-text { color: #555; font-size: 11px; }
+
+        .header-icons { display: flex; gap: 18px; }
+        .header-icons i { font-size: 21px; color: #ccc; cursor: pointer; }
+
+        /* OFFLINE BAR */
         .offline-bar {
-            background: #ef4444;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 13px;
-            display: none;
+            background: #7f1d1d; color: #fca5a5; padding: 8px 16px;
+            text-align: center; font-size: 12px; display: none; flex-shrink: 0;
         }
-        
-        .offline-bar.active {
-            display: block;
+        .offline-bar.show { display: block; }
+
+        /* MESSAGES */
+        .messages-wrap {
+            flex: 1; overflow-y: auto; padding: 12px 16px 8px;
+            display: flex; flex-direction: column; gap: 4px;
+            background: #000; -webkit-overflow-scrolling: touch;
         }
-        
-        .hidden {
-            display: none !important;
+        .messages-wrap::-webkit-scrollbar { display: none; }
+
+        .msg-row { display: flex; animation: fadeSlide 0.2s ease; }
+        @keyframes fadeSlide { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+        .msg-row.sent  { justify-content: flex-end; }
+        .msg-row.recv  { justify-content: flex-start; }
+
+        .msg-bubble {
+            max-width: 78%; padding: 10px 14px;
+            border-radius: 22px; word-break: break-word; position: relative;
         }
+        .msg-row.sent  .msg-bubble { background: #10b981; color: white; border-bottom-right-radius: 5px; }
+        .msg-row.recv  .msg-bubble { background: #1e1e1e; color: white; border-bottom-left-radius: 5px; }
+
+        .msg-sender-name { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+        .msg-text  { font-size: 15px; line-height: 1.5; }
+        .msg-image { max-width: 100%; max-height: 230px; border-radius: 14px; margin-top: 6px; cursor: pointer; display: block; }
+        .msg-meta  { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 4px; font-size: 10px; color: rgba(255,255,255,0.5); }
+        .msg-meta .seen-icon { color: #60a5fa; }
+
+        /* DATE DIVIDER */
+        .date-divider {
+            text-align: center; margin: 10px 0;
+            font-size: 11px; color: #555;
+        }
+        .date-divider span {
+            background: #111; border: 1px solid #262626;
+            padding: 3px 12px; border-radius: 20px;
+        }
+
+        /* IMAGE PREVIEW BAR */
+        .img-preview-bar {
+            display: none; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #111; border-bottom: 1px solid #1a1a1a;
+        }
+        .img-preview-bar.show { display: flex; }
+        .img-preview-thumb { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; border: 2px solid #10b981; }
+        .img-preview-name { flex: 1; font-size: 13px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .img-preview-close { color: #ef4444; font-size: 22px; cursor: pointer; }
+
+        /* EMOJI PICKER */
+        .emoji-grid-wrap {
+            display: none; background: #111; border-top: 1px solid #1a1a1a;
+            padding: 8px 12px 4px; flex-shrink: 0;
+        }
+        .emoji-grid-wrap.show { display: block; }
+        .emoji-grid {
+            display: flex; flex-wrap: wrap; gap: 4px; max-height: 140px;
+            overflow-y: auto;
+        }
+        .emoji-grid::-webkit-scrollbar { display: none; }
+        .emoji-item {
+            font-size: 24px; cursor: pointer; padding: 4px 5px;
+            border-radius: 8px; transition: background 0.15s;
+            line-height: 1;
+        }
+        .emoji-item:hover { background: #1e1e1e; }
+
+        /* INPUT AREA */
+        .input-area { background: #000; border-top: 1px solid #1a1a1a; padding: 10px 14px 12px; flex-shrink: 0; }
+        .input-row {
+            display: flex; align-items: flex-end; gap: 8px;
+            background: #111; border: 1px solid #262626;
+            border-radius: 28px; padding: 6px 6px 6px 14px;
+        }
+        .input-icons { display: flex; gap: 10px; align-items: center; }
+        .input-icons i { color: #555; font-size: 22px; cursor: pointer; transition: color 0.15s; }
+        .input-icons i:hover { color: #aaa; }
+        .msg-textarea {
+            flex: 1; background: transparent; border: none; color: white;
+            font-size: 16px; padding: 8px 0; max-height: 100px;
+            resize: none; font-family: inherit; outline: none;
+        }
+        .msg-textarea::placeholder { color: #444; }
+        .send-btn {
+            width: 42px; height: 42px; border: none; border-radius: 50%;
+            background: #10b981; color: white; font-size: 17px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; flex-shrink: 0; transition: transform 0.15s, background 0.15s;
+        }
+        .send-btn:active { transform: scale(0.92); }
+        .send-btn.purple { background: #8b5cf6; }
+
+        /* DELETE BUTTON */
+        .delete-wrap { display: flex; justify-content: center; padding: 6px 0; }
+        .delete-btn {
+            background: transparent; color: #555; border: 1px solid #262626;
+            border-radius: 20px; padding: 7px 18px; font-size: 12px;
+            cursor: pointer; display: flex; align-items: center; gap: 6px;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover { background: #1a0000; color: #ef4444; border-color: #ef4444; }
+
+        /* NEW MSG BADGE */
+        .new-badge {
+            background: #ef4444; color: white; font-size: 10px; font-weight: 700;
+            padding: 2px 8px; border-radius: 12px; margin-left: 6px;
+            animation: badge-pop 0.3s ease;
+        }
+        @keyframes badge-pop { from{transform:scale(0)} to{transform:scale(1)} }
+
+        .empty-state { text-align: center; color: #333; padding: 40px 0; font-size: 14px; }
+        .empty-state i { font-size: 40px; margin-bottom: 12px; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <!-- === LOGIN SCREEN - EXACT WAISA UI === -->
-    <div id="loginScreen" class="login-screen">
-        <div class="login-container">
-            <div class="instagram-logo">
-                <i class="fas fa-flask"></i> Research Collab
-            </div>
-            
-            <p style="color: #737373; margin-bottom: 30px;">Create your username to start</p>
-            
-            <input type="text" id="usernameInput" class="username-input" placeholder="Username" maxlength="30">
-            
-            <div class="profile-selector">
-                <button class="profile-btn parnjal" onclick="loginAsParnjal()">
-                    <i class="fas fa-flask"></i>
-                    Continue as Parnjal
-                </button>
-                <button class="profile-btn danraj" onclick="loginAsDanraj()">
-                    <i class="fas fa-dna"></i>
-                    Continue as Danraj
-                </button>
-            </div>
-            
-            <div style="color: #525252; font-size: 13px; margin-top: 40px;">
-                <i class="fas fa-shield-alt"></i> Instagram Style • Real-time • Two Phones
-            </div>
-        </div>
-    </div>
-    
-    <!-- === PARNJAL'S CHAT - EXACT WAISA UI === -->
-    <div id="parnjalChat" class="chat-app">
-        <!-- Connection Status -->
-        <div id="parnjalConnection" class="connection-status">
-            <span id="parnjalConnDot" class="connection-dot connected"></span>
-            <span id="parnjalConnText">Connected</span>
-        </div>
-        
-        <!-- Offline Bar -->
-        <div id="parnjalOffline" class="offline-bar">
-            <i class="fas fa-wifi-slash"></i> No internet connection
-        </div>
-        
-        <!-- Header - Danraj's Info for Parnjal -->
-        <div class="chat-header">
-            <div class="header-left">
-                <div class="avatar danraj">
-                    <i class="fas fa-dna"></i>
-                    <span id="parnjalViewOnlineDot" class="online-dot"></span>
-                </div>
-                <div class="user-info">
-                    <h2>
-                        Danraj
-                        <span id="parnjalNewBadge" class="new-badge" style="display: none;">New</span>
-                    </h2>
-                    <div class="status-text">
-                        <span id="parnjalViewStatus" class="status-online">Online</span>
-                        <span id="parnjalViewTyping" class="typing-indicator" style="display: none;">typing...</span>
-                        <span id="parnjalViewLastSeen" class="last-seen" style="display: none;"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="header-actions">
-                <i class="fas fa-phone"></i>
-                <i class="fas fa-video"></i>
-                <i class="fas fa-info-circle"></i>
-            </div>
-        </div>
-        
-        <!-- Image Preview -->
-        <div id="parnjalImagePreview" class="image-preview">
-            <img id="parnjalPreviewImg" class="preview-img" src="">
-            <span id="parnjalPreviewName" class="preview-name"></span>
-            <i class="fas fa-times-circle remove-image" onclick="clearParnjalImage()"></i>
-        </div>
-        
-        <!-- Messages -->
-        <div id="parnjalMessages" class="messages-container"></div>
-        
-        <!-- Delete All Button -->
-        <div class="delete-wrapper">
-            <button class="delete-btn" onclick="deleteAllMessages()">
-                <i class="fas fa-trash"></i> Delete All Chats
+
+<!-- ========== LOGIN SCREEN ========== -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-container">
+        <div class="logo-title"><i class="fas fa-comments"></i> PD Chat</div>
+        <div class="logo-sub">Private • Secure • Real-time</div>
+
+        <input type="password" id="passwordInput" class="login-field" placeholder="🔑 Enter password" autocomplete="off">
+        <div id="loginError" class="login-error"></div>
+
+        <div class="profile-btns">
+            <button class="profile-btn pranjal" onclick="doLogin('pranjal')">
+                <i class="fas fa-flask"></i> Continue as Pranjal
+            </button>
+            <button class="profile-btn danraj" onclick="doLogin('danraj')">
+                <i class="fas fa-dna"></i> Continue as Danraj
             </button>
         </div>
-        
-        <!-- Chat Input -->
-        <div class="chat-input-wrapper">
-            <div class="input-container">
-                <div class="input-actions">
-                    <i class="fas fa-plus-circle" onclick="document.getElementById('parnjalFileInput').click()"></i>
-                    <i class="fas fa-image" onclick="document.getElementById('parnjalFileInput').click()"></i>
-                    <i class="fas fa-smile" onclick="toggleParnjalEmoji()"></i>
-                </div>
-                <textarea 
-                    id="parnjalInput"
-                    class="message-input"
-                    placeholder="Message Danraj..."
-                    rows="1"
-                    oninput="autoResize(this); parnjalTyping()"
-                    onkeydown="handleParnjalKeyPress(event)"
-                ></textarea>
-                <button class="send-btn" onclick="sendParnjalMessage()">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Hidden file input -->
-        <input type="file" id="parnjalFileInput" accept="image/*" style="display: none;" onchange="handleParnjalImage(event)">
+        <div class="login-footer"><i class="fas fa-lock"></i> &nbsp;Password protected • End-to-end Firebase sync</div>
     </div>
-    
-    <!-- === DANRAJ'S CHAT - EXACT WAISA UI === -->
-    <div id="danrajChat" class="chat-app">
-        <!-- Connection Status -->
-        <div id="danrajConnection" class="connection-status">
-            <span id="danrajConnDot" class="connection-dot connected"></span>
-            <span id="danrajConnText">Connected</span>
-        </div>
-        
-        <!-- Offline Bar -->
-        <div id="danrajOffline" class="offline-bar">
-            <i class="fas fa-wifi-slash"></i> No internet connection
-        </div>
-        
-        <!-- Header - Parnjal's Info for Danraj -->
-        <div class="chat-header">
-            <div class="header-left">
-                <div class="avatar parnjal">
-                    <i class="fas fa-flask"></i>
-                    <span id="danrajViewOnlineDot" class="online-dot"></span>
-                </div>
-                <div class="user-info">
-                    <h2>
-                        Parnjal
-                        <span id="danrajNewBadge" class="new-badge" style="display: none;">New</span>
-                    </h2>
-                    <div class="status-text">
-                        <span id="danrajViewStatus" class="status-online">Online</span>
-                        <span id="danrajViewTyping" class="typing-indicator" style="display: none;">typing...</span>
-                        <span id="danrajViewLastSeen" class="last-seen" style="display: none;"></span>
-                    </div>
+</div>
+
+<!-- ========== PRANJAL'S CHAT VIEW ========== -->
+<div id="prnChat" class="chat-app">
+    <div id="prnOfflineBar" class="offline-bar"><i class="fas fa-wifi" style="margin-right:6px"></i>No internet connection</div>
+    <div class="chat-header">
+        <div class="header-left">
+            <div class="header-avatar danraj">
+                <i class="fas fa-dna"></i>
+                <span id="prnDot" class="offline-dot"></span>
+            </div>
+            <div class="header-info">
+                <h2>Danraj <span id="prnBadge" class="new-badge hidden">New</span></h2>
+                <div class="header-status">
+                    <span id="prnStatus" class="status-offline">Offline</span>
+                    <span id="prnTyping" class="typing-anim hidden">typing...</span>
+                    <span id="prnLastSeen" class="last-seen-text hidden"></span>
                 </div>
             </div>
-            <div class="header-actions">
-                <i class="fas fa-phone"></i>
-                <i class="fas fa-video"></i>
-                <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="header-icons">
+            <i class="fas fa-phone"></i>
+            <i class="fas fa-video"></i>
+            <i class="fas fa-ellipsis-v" onclick="doLogout()"></i>
+        </div>
+    </div>
+
+    <div id="prnImgBar" class="img-preview-bar">
+        <img id="prnThumb" class="img-preview-thumb" src="">
+        <span id="prnFileName" class="img-preview-name"></span>
+        <i class="fas fa-times-circle img-preview-close" onclick="clearImg('pranjal')"></i>
+    </div>
+
+    <div id="prnMessages" class="messages-wrap">
+        <div class="empty-state"><i class="fas fa-comment-dots"></i><br>No messages yet.<br>Say hi to Danraj!</div>
+    </div>
+
+    <div class="delete-wrap">
+        <button class="delete-btn" onclick="deleteAll()"><i class="fas fa-trash"></i> Clear all chats</button>
+    </div>
+
+    <div id="prnEmojiWrap" class="emoji-grid-wrap">
+        <div id="prnEmojiGrid" class="emoji-grid"></div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-row">
+            <div class="input-icons">
+                <i class="fas fa-image" onclick="document.getElementById('prnFileInput').click()"></i>
+                <i class="fas fa-smile" onclick="toggleEmoji('pranjal')"></i>
             </div>
-        </div>
-        
-        <!-- Image Preview -->
-        <div id="danrajImagePreview" class="image-preview">
-            <img id="danrajPreviewImg" class="preview-img" src="">
-            <span id="danrajPreviewName" class="preview-name"></span>
-            <i class="fas fa-times-circle remove-image" onclick="clearDanrajImage()"></i>
-        </div>
-        
-        <!-- Messages -->
-        <div id="danrajMessages" class="messages-container"></div>
-        
-        <!-- Delete All Button -->
-        <div class="delete-wrapper">
-            <button class="delete-btn" onclick="deleteAllMessages()">
-                <i class="fas fa-trash"></i> Delete All Chats
+            <textarea id="prnInput" class="msg-textarea" placeholder="Message Danraj..." rows="1"
+                oninput="autoResize(this); fireTyping('pranjal')"
+                onkeydown="handleKey(event,'pranjal')"></textarea>
+            <button class="send-btn purple" onclick="sendMsg('pranjal')">
+                <i class="fas fa-paper-plane"></i>
             </button>
         </div>
-        
-        <!-- Chat Input -->
-        <div class="chat-input-wrapper">
-            <div class="input-container">
-                <div class="input-actions">
-                    <i class="fas fa-plus-circle" onclick="document.getElementById('danrajFileInput').click()"></i>
-                    <i class="fas fa-image" onclick="document.getElementById('danrajFileInput').click()"></i>
-                    <i class="fas fa-smile" onclick="toggleDanrajEmoji()"></i>
+    </div>
+    <input type="file" id="prnFileInput" accept="image/*" style="display:none" onchange="pickImg(event,'pranjal')">
+</div>
+
+<!-- ========== DANRAJ'S CHAT VIEW ========== -->
+<div id="dnrChat" class="chat-app">
+    <div id="dnrOfflineBar" class="offline-bar"><i class="fas fa-wifi" style="margin-right:6px"></i>No internet connection</div>
+    <div class="chat-header">
+        <div class="header-left">
+            <div class="header-avatar pranjal">
+                <i class="fas fa-flask"></i>
+                <span id="dnrDot" class="offline-dot"></span>
+            </div>
+            <div class="header-info">
+                <h2>Pranjal <span id="dnrBadge" class="new-badge hidden">New</span></h2>
+                <div class="header-status">
+                    <span id="dnrStatus" class="status-offline">Offline</span>
+                    <span id="dnrTyping" class="typing-anim hidden">typing...</span>
+                    <span id="dnrLastSeen" class="last-seen-text hidden"></span>
                 </div>
-                <textarea 
-                    id="danrajInput"
-                    class="message-input"
-                    placeholder="Message Parnjal..."
-                    rows="1"
-                    oninput="autoResize(this); danrajTyping()"
-                    onkeydown="handleDanrajKeyPress(event)"
-                ></textarea>
-                <button class="send-btn" onclick="sendDanrajMessage()">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
             </div>
         </div>
-        
-        <!-- Hidden file input -->
-        <input type="file" id="danrajFileInput" accept="image/*" style="display: none;" onchange="handleDanrajImage(event)">
+        <div class="header-icons">
+            <i class="fas fa-phone"></i>
+            <i class="fas fa-video"></i>
+            <i class="fas fa-ellipsis-v" onclick="doLogout()"></i>
+        </div>
     </div>
-    
-    <script>
-        // ============================================
-        //   🔥 INSTAGRAM STYLE UI - BILKUL WAISA HI 🔥
-        //   ✅ EXACT UI - Kuch nahi badla
-        //   ✅ SIRF Firebase fix kiya hai
-        //   ✅ REAL online indicator
-        //   ✅ REAL typing indicator
-        //   ✅ REAL message sync
-        //   ✅ Two phones working
-        // ============================================
-        
-        // FIREBASE CONFIG - EXACT WAISA
-        const firebaseConfig = {
-            apiKey: "AIzaSyAFgUrPoDgLDfyvHGt3qAuozt1W2pZqP1M",
-            authDomain: "kanishk-9c202.firebaseapp.com",
-            databaseURL: "https://kanishk-9c202-default-rtdb.firebaseio.com",
-            projectId: "kanishk-9c202",
-            storageBucket: "kanishk-9c202.firebasestorage.app",
-            messagingSenderId: "725714510983",
-            appId: "1:725714510983:web:d31590728e3ca568c8c422"
-        };
-        
-        // INIT FIREBASE - 9.6.1 WORKING VERSION
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const storage = firebase.storage();
-        
-        // GLOBAL VARIABLES
-        let currentUser = '';
-        let parnjalUsername = '@parnjal';
-        let danrajUsername = '@danraj';
-        let parnjalSelectedImage = null;
-        let danrajSelectedImage = null;
-        let parnjalTypingTimeout = null;
-        let danrajTypingTimeout = null;
-        let parnjalEmojiActive = false;
-        let danrajEmojiActive = false;
-        
-        // ========== LOGIN FUNCTIONS ==========
-        window.loginAsParnjal = function() {
-            const username = document.getElementById('usernameInput').value.trim();
-            if (username) {
-                parnjalUsername = username.startsWith('@') ? username : '@' + username;
-            }
-            
-            currentUser = 'parnjal';
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('parnjalChat').classList.add('active');
-            
-            initPresence('parnjal');
-            listenToUserStatus('danraj', 'parnjal');
-            loadMessages('parnjal');
-            
-            setTimeout(() => document.getElementById('parnjalInput').focus(), 300);
-        };
-        
-        window.loginAsDanraj = function() {
-            const username = document.getElementById('usernameInput').value.trim();
-            if (username) {
-                danrajUsername = username.startsWith('@') ? username : '@' + username;
-            }
-            
-            currentUser = 'danraj';
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('danrajChat').classList.add('active');
-            
-            initPresence('danraj');
-            listenToUserStatus('parnjal', 'danraj');
-            loadMessages('danraj');
-            
-            setTimeout(() => document.getElementById('danrajInput').focus(), 300);
-        };
-        
-        // ========== REAL ONLINE STATUS ==========
-        function initPresence(user) {
-            const userStatusRef = database.ref(`status/${user}`);
-            
-            database.ref('.info/connected').on('value', (snap) => {
-                if (snap.val() === true) {
-                    userStatusRef.onDisconnect().set({
-                        online: false,
-                        lastSeen: firebase.database.ServerValue.TIMESTAMP
-                    });
-                    
-                    userStatusRef.set({
-                        online: true,
-                        lastSeen: firebase.database.ServerValue.TIMESTAMP,
-                        lastActive: Date.now()
-                    });
-                    
-                    updateConnectionStatus(user, true);
-                    
-                    setInterval(() => {
-                        if (currentUser === user) {
-                            userStatusRef.update({
-                                online: true,
-                                lastActive: Date.now()
-                            });
-                        }
-                    }, 20000);
-                } else {
-                    updateConnectionStatus(user, false);
-                }
-            });
-            
-            window.addEventListener('beforeunload', function() {
-                userStatusRef.set({
-                    online: false,
-                    lastSeen: firebase.database.ServerValue.TIMESTAMP
-                });
-            });
+
+    <div id="dnrImgBar" class="img-preview-bar">
+        <img id="dnrThumb" class="img-preview-thumb" src="">
+        <span id="dnrFileName" class="img-preview-name"></span>
+        <i class="fas fa-times-circle img-preview-close" onclick="clearImg('danraj')"></i>
+    </div>
+
+    <div id="dnrMessages" class="messages-wrap">
+        <div class="empty-state"><i class="fas fa-comment-dots"></i><br>No messages yet.<br>Say hi to Pranjal!</div>
+    </div>
+
+    <div class="delete-wrap">
+        <button class="delete-btn" onclick="deleteAll()"><i class="fas fa-trash"></i> Clear all chats</button>
+    </div>
+
+    <div id="dnrEmojiWrap" class="emoji-grid-wrap">
+        <div id="dnrEmojiGrid" class="emoji-grid"></div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-row">
+            <div class="input-icons">
+                <i class="fas fa-image" onclick="document.getElementById('dnrFileInput').click()"></i>
+                <i class="fas fa-smile" onclick="toggleEmoji('danraj')"></i>
+            </div>
+            <textarea id="dnrInput" class="msg-textarea" placeholder="Message Pranjal..." rows="1"
+                oninput="autoResize(this); fireTyping('danraj')"
+                onkeydown="handleKey(event,'danraj')"></textarea>
+            <button class="send-btn" onclick="sendMsg('danraj')">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    <input type="file" id="dnrFileInput" accept="image/*" style="display:none" onchange="pickImg(event,'danraj')">
+</div>
+
+<script>
+// ============================================
+//  🔐 PASSWORDS
+// ============================================
+const PASSWORDS = {
+    pranjal: 'pranjal123',   // ← Pranjal ka password
+    danraj:  'danraj123'     // ← Danraj ka password
+};
+
+// ============================================
+//  🔥 FIREBASE CONFIG
+// ============================================
+const firebaseConfig = {
+    apiKey: "AIzaSyAFgUrPoDgLDfyvHGt3qAuozt1W2pZqP1M",
+    authDomain: "kanishk-9c202.firebaseapp.com",
+    databaseURL: "https://kanishk-9c202-default-rtdb.firebaseio.com",
+    projectId: "kanishk-9c202",
+    storageBucket: "kanishk-9c202.firebasestorage.app",
+    messagingSenderId: "725714510983",
+    appId: "1:725714510983:web:d31590728e3ca568c8c422"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db  = firebase.database();
+const sto = firebase.storage();
+
+// ============================================
+//  STATE
+// ============================================
+let ME = '';   // 'pranjal' or 'danraj'
+let OTHER = '';
+let selectedImage = null;
+let typingTimer = null;
+let loadedMsgIds = new Set();
+
+// ============================================
+//  EMOJI LIST
+// ============================================
+const EMOJIS = [
+    '😀','😂','🥰','😍','😎','🤔','😭','😤','🥺','😏',
+    '😊','🤩','😜','😴','🤯','😇','🥳','😋','🤗','😡',
+    '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💔','❣️',
+    '👍','👎','👏','🙌','🤝','🤜','✌️','🤞','🖐️','👋',
+    '🔥','✨','💥','🎉','🎊','🎁','🏆','⚡','💫','🌟',
+    '😈','👀','💀','🤡','👻','🫠','🫡','🫢','🫣','🫤',
+    '🍕','🍔','🌮','🍜','🍣','🍦','🎂','☕','🧋','🍺',
+    '🐶','🐱','🐸','🦁','🐼','🦋','🌸','🌊','🌈','🌙',
+    '📱','💻','🎮','🎵','🎬','📸','🚀','⚽','🏀','🎯'
+];
+
+// ============================================
+//  LOGIN
+// ============================================
+function doLogin(user) {
+    const pwd = document.getElementById('passwordInput').value.trim();
+    if (!pwd) { showErr('Password daalo pehle bhai!'); return; }
+    if (pwd !== PASSWORDS[user]) { showErr('❌ Wrong password! Try again.'); return; }
+
+    ME    = user;
+    OTHER = user === 'pranjal' ? 'danraj' : 'pranjal';
+
+    document.getElementById('loginScreen').style.display = 'none';
+    const chatEl = user === 'pranjal' ? 'prnChat' : 'dnrChat';
+    document.getElementById(chatEl).classList.add('active');
+
+    buildEmojiGrid(user);
+    initPresence();
+    watchOtherStatus();
+    watchTyping();
+    loadMessages();
+
+    const inputId = user === 'pranjal' ? 'prnInput' : 'dnrInput';
+    setTimeout(() => document.getElementById(inputId).focus(), 400);
+}
+
+function showErr(msg) {
+    document.getElementById('loginError').textContent = msg;
+}
+
+function doLogout() {
+    if (!confirm('Logout karna hai?')) return;
+    setPresence(false);
+    ME = ''; OTHER = '';
+    document.getElementById('prnChat').classList.remove('active');
+    document.getElementById('dnrChat').classList.remove('active');
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('loginError').textContent = '';
+    loadedMsgIds.clear();
+}
+
+// ============================================
+//  PRESENCE (ONLINE STATUS)
+// ============================================
+function initPresence() {
+    const ref = db.ref(`status/${ME}`);
+    db.ref('.info/connected').on('value', snap => {
+        if (snap.val()) {
+            ref.onDisconnect().set({ online: false, lastSeen: firebase.database.ServerValue.TIMESTAMP });
+            ref.set({ online: true, lastActive: Date.now(), lastSeen: firebase.database.ServerValue.TIMESTAMP });
+            setConnected(true);
+        } else {
+            setConnected(false);
         }
-        
-        function listenToUserStatus(otherUser, viewer) {
-            database.ref(`status/${otherUser}`).on('value', (snapshot) => {
-                const status = snapshot.val();
-                
-                if (viewer === 'parnjal') {
-                    const onlineDot = document.getElementById('parnjalViewOnlineDot');
-                    const statusText = document.getElementById('parnjalViewStatus');
-                    const lastSeen = document.getElementById('parnjalViewLastSeen');
-                    
-                    if (status && status.online === true && (Date.now() - status.lastActive < 40000)) {
-                        onlineDot.className = 'online-dot';
-                        statusText.className = 'status-online';
-                        statusText.textContent = 'Online';
-                        lastSeen.style.display = 'none';
-                    } else {
-                        onlineDot.className = 'offline-dot';
-                        statusText.className = 'status-offline';
-                        statusText.textContent = 'Offline';
-                        if (status?.lastSeen) {
-                            lastSeen.style.display = 'inline';
-                            lastSeen.textContent = `Last seen ${formatLastSeen(status.lastSeen)}`;
-                        } else {
-                            lastSeen.style.display = 'none';
-                        }
-                    }
-                } else {
-                    const onlineDot = document.getElementById('danrajViewOnlineDot');
-                    const statusText = document.getElementById('danrajViewStatus');
-                    const lastSeen = document.getElementById('danrajViewLastSeen');
-                    
-                    if (status && status.online === true && (Date.now() - status.lastActive < 40000)) {
-                        onlineDot.className = 'online-dot';
-                        statusText.className = 'status-online';
-                        statusText.textContent = 'Online';
-                        lastSeen.style.display = 'none';
-                    } else {
-                        onlineDot.className = 'offline-dot';
-                        statusText.className = 'status-offline';
-                        statusText.textContent = 'Offline';
-                        if (status?.lastSeen) {
-                            lastSeen.style.display = 'inline';
-                            lastSeen.textContent = `Last seen ${formatLastSeen(status.lastSeen)}`;
-                        } else {
-                            lastSeen.style.display = 'none';
-                        }
-                    }
-                }
-            });
-            
-            const typingPath = viewer === 'parnjal' ? 'danraj_to_parnjal' : 'parnjal_to_danraj';
-            const typingId = viewer === 'parnjal' ? 'parnjalViewTyping' : 'danrajViewTyping';
-            const statusId = viewer === 'parnjal' ? 'parnjalViewStatus' : 'danrajViewStatus';
-            const lastSeenId = viewer === 'parnjal' ? 'parnjalViewLastSeen' : 'danrajViewLastSeen';
-            
-            database.ref(`typing/${typingPath}`).on('value', (snapshot) => {
-                const typing = snapshot.val();
-                const typingEl = document.getElementById(typingId);
-                const statusEl = document.getElementById(statusId);
-                const lastSeenEl = document.getElementById(lastSeenId);
-                
-                if (typing?.isTyping && Date.now() - typing.timestamp < 3000) {
-                    typingEl.style.display = 'inline';
-                    statusEl.style.display = 'none';
-                    lastSeenEl.style.display = 'none';
-                } else {
-                    typingEl.style.display = 'none';
-                    statusEl.style.display = 'inline';
-                }
-            });
-        }
-        
-        // ========== SEND MESSAGES ==========
-        window.sendParnjalMessage = function() {
-            const input = document.getElementById('parnjalInput');
-            const message = input.value.trim();
-            
-            if (!message && !parnjalSelectedImage) return;
-            
-            if (parnjalSelectedImage) {
-                uploadImage('parnjal', message);
+    });
+
+    // Heartbeat every 25s
+    setInterval(() => {
+        if (ME) ref.update({ online: true, lastActive: Date.now() });
+    }, 25000);
+
+    window.addEventListener('beforeunload', () => setPresence(false));
+    window.addEventListener('pagehide',     () => setPresence(false));
+}
+
+function setPresence(online) {
+    if (!ME) return;
+    db.ref(`status/${ME}`).set({ online, lastSeen: firebase.database.ServerValue.TIMESTAMP });
+}
+
+function setConnected(ok) {
+    const bar = ME === 'pranjal' ? 'prnOfflineBar' : 'dnrOfflineBar';
+    if (ok) document.getElementById(bar).classList.remove('show');
+    else    document.getElementById(bar).classList.add('show');
+}
+
+// ============================================
+//  WATCH OTHER USER'S STATUS
+// ============================================
+function watchOtherStatus() {
+    db.ref(`status/${OTHER}`).on('value', snap => {
+        const s = snap.val();
+        const pfx = ME === 'pranjal' ? 'prn' : 'dnr';
+
+        const dotEl    = document.getElementById(`${pfx}Dot`);
+        const statEl   = document.getElementById(`${pfx}Status`);
+        const lsEl     = document.getElementById(`${pfx}LastSeen`);
+
+        const isOnline = s && s.online && (Date.now() - s.lastActive < 45000);
+
+        if (isOnline) {
+            dotEl.className  = 'online-dot';
+            statEl.className = 'status-online';
+            statEl.textContent = 'Online';
+            statEl.classList.remove('hidden');
+            lsEl.classList.add('hidden');
+        } else {
+            dotEl.className  = 'offline-dot';
+            statEl.className = 'status-offline';
+            statEl.textContent = 'Offline';
+            statEl.classList.remove('hidden');
+            if (s?.lastSeen) {
+                lsEl.textContent = `Last seen ${fmtTime(s.lastSeen)}`;
+                lsEl.classList.remove('hidden');
             } else {
-                const messageData = {
-                    from: 'parnjal',
-                    fromName: 'Parnjal',
-                    fromUsername: parnjalUsername,
-                    to: 'danraj',
-                    toUsername: danrajUsername,
-                    text: message,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    seen: false,
-                    type: 'text'
-                };
-                
-                database.ref('messages').push(messageData);
-            }
-            
-            input.value = '';
-            autoResize(input);
-            stopParnjalTyping();
-            input.focus();
-        };
-        
-        window.sendDanrajMessage = function() {
-            const input = document.getElementById('danrajInput');
-            const message = input.value.trim();
-            
-            if (!message && !danrajSelectedImage) return;
-            
-            if (danrajSelectedImage) {
-                uploadImage('danraj', message);
-            } else {
-                const messageData = {
-                    from: 'danraj',
-                    fromName: 'Danraj',
-                    fromUsername: danrajUsername,
-                    to: 'parnjal',
-                    toUsername: parnjalUsername,
-                    text: message,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    seen: false,
-                    type: 'text'
-                };
-                
-                database.ref('messages').push(messageData);
-            }
-            
-            input.value = '';
-            autoResize(input);
-            stopDanrajTyping();
-            input.focus();
-        };
-        
-        // ========== UPLOAD IMAGE ==========
-        function uploadImage(user, text) {
-            const file = user === 'parnjal' ? parnjalSelectedImage : danrajSelectedImage;
-            if (!file) return;
-            
-            const fileName = `${user}_${Date.now()}_${file.name}`;
-            const storageRef = storage.ref(`chat_images/${fileName}`);
-            
-            storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL())
-            .then(url => {
-                const messageData = {
-                    from: user,
-                    fromName: user === 'parnjal' ? 'Parnjal' : 'Danraj',
-                    fromUsername: user === 'parnjal' ? parnjalUsername : danrajUsername,
-                    to: user === 'parnjal' ? 'danraj' : 'parnjal',
-                    toUsername: user === 'parnjal' ? danrajUsername : parnjalUsername,
-                    text: text || '📷 Shared an image',
-                    imageUrl: url,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    seen: false,
-                    type: 'image'
-                };
-                
-                return database.ref('messages').push(messageData);
-            })
-            .then(() => {
-                if (user === 'parnjal') {
-                    clearParnjalImage();
-                } else {
-                    clearDanrajImage();
-                }
-            });
-        }
-        
-        // ========== LOAD MESSAGES ==========
-        function loadMessages(user) {
-            const containerId = user === 'parnjal' ? 'parnjalMessages' : 'danrajMessages';
-            const container = document.getElementById(containerId);
-            
-            database.ref('messages').off();
-            
-            database.ref('messages').orderByChild('timestamp').once('value', (snapshot) => {
-                container.innerHTML = '';
-                
-                const messages = snapshot.val();
-                if (messages) {
-                    const sorted = Object.keys(messages).sort((a,b) => 
-                        messages[a].timestamp - messages[b].timestamp
-                    );
-                    
-                    sorted.forEach(key => {
-                        const msg = messages[key];
-                        if ((msg.from === 'parnjal' && msg.to === 'danraj') || 
-                            (msg.from === 'danraj' && msg.to === 'parnjal')) {
-                            displayMessage(msg, key, user);
-                        }
-                    });
-                }
-            });
-            
-            database.ref('messages').on('child_added', (snapshot) => {
-                const msg = snapshot.val();
-                const msgId = snapshot.key;
-                
-                if ((msg.from === 'parnjal' && msg.to === 'danraj') || 
-                    (msg.from === 'danraj' && msg.to === 'parnjal')) {
-                    
-                    if (!document.getElementById(`${user}-msg-${msgId}`)) {
-                        displayMessage(msg, msgId, user);
-                        
-                        if (msg.from !== user && !msg.seen) {
-                            database.ref(`messages/${msgId}`).update({ seen: true });
-                        }
-                        
-                        if (msg.from !== user) {
-                            const badgeId = user === 'parnjal' ? 'parnjalNewBadge' : 'danrajNewBadge';
-                            document.getElementById(badgeId).style.display = 'inline';
-                            setTimeout(() => {
-                                document.getElementById(badgeId).style.display = 'none';
-                            }, 3000);
-                        }
-                    }
-                }
-            });
-        }
-        
-        // ========== DISPLAY MESSAGE ==========
-        function displayMessage(msg, msgId, currentUser) {
-            const containerId = currentUser === 'parnjal' ? 'parnjalMessages' : 'danrajMessages';
-            const container = document.getElementById(containerId);
-            const isSelf = msg.from === currentUser;
-            
-            if (document.getElementById(`${currentUser}-msg-${msgId}`)) return;
-            
-            const wrapper = document.createElement('div');
-            wrapper.className = `message-wrapper ${isSelf ? 'self' : 'other'}`;
-            wrapper.id = `${currentUser}-msg-${msgId}`;
-            
-            let time = '';
-            if (msg.timestamp) {
-                const date = new Date(msg.timestamp);
-                time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            }
-            
-            let content = '';
-            if (!isSelf) {
-                const senderColor = msg.from === 'parnjal' ? '#8b5cf6' : '#10b981';
-                content += `<div class="message-sender" style="color: ${senderColor};">${msg.fromName} ${msg.fromUsername || ''}</div>`;
-            }
-            
-            if (msg.imageUrl) {
-                content += `<img src="${msg.imageUrl}" class="message-image" onclick="window.open('${msg.imageUrl}', '_blank')">`;
-            }
-            
-            if (msg.text) {
-                content += `<div class="message-text">${escapeHTML(msg.text)}</div>`;
-            }
-            
-            wrapper.innerHTML = `
-                <div class="message-bubble">
-                    ${content}
-                    <div class="message-meta">
-                        <span class="message-time">${time}</span>
-                        ${isSelf ? `<span class="message-status">${msg.seen ? '<i class="fas fa-check-double seen"></i>' : '<i class="fas fa-check"></i>'}</span>` : ''}
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(wrapper);
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        // ========== TYPING INDICATORS ==========
-        window.parnjalTyping = function() {
-            if (!currentUser) return;
-            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
-            
-            database.ref('typing/parnjal_to_danraj').set({
-                isTyping: true,
-                timestamp: Date.now()
-            });
-            
-            parnjalTypingTimeout = setTimeout(() => {
-                database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
-            }, 2000);
-        };
-        
-        window.danrajTyping = function() {
-            if (!currentUser) return;
-            if (danrajTypingTimeout) clearTimeout(danrajTypingTimeout);
-            
-            database.ref('typing/danraj_to_parnjal').set({
-                isTyping: true,
-                timestamp: Date.now()
-            });
-            
-            danrajTypingTimeout = setTimeout(() => {
-                database.ref('typing/danraj_to_parnjal').set({ isTyping: false });
-            }, 2000);
-        };
-        
-        function stopParnjalTyping() {
-            if (parnjalTypingTimeout) clearTimeout(parnjalTypingTimeout);
-            database.ref('typing/parnjal_to_danraj').set({ isTyping: false });
-        }
-        
-        function stopDanrajTyping() {
-            if (danrajTypingTimeout) clearTimeout(danrajTypingTimeout);
-            database.ref('typing/danraj_to_parnjal').set({ isTyping: false });
-        }
-        
-        // ========== IMAGE HANDLERS ==========
-        window.handleParnjalImage = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Image size should be less than 5MB');
-                return;
-            }
-            
-            parnjalSelectedImage = file;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('parnjalPreviewImg').src = e.target.result;
-                document.getElementById('parnjalPreviewName').textContent = 
-                    file.name.length > 20 ? file.name.substring(0,20) + '...' : file.name;
-                document.getElementById('parnjalImagePreview').classList.add('active');
-            };
-            reader.readAsDataURL(file);
-        };
-        
-        window.handleDanrajImage = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Image size should be less than 5MB');
-                return;
-            }
-            
-            danrajSelectedImage = file;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('danrajPreviewImg').src = e.target.result;
-                document.getElementById('danrajPreviewName').textContent = 
-                    file.name.length > 20 ? file.name.substring(0,20) + '...' : file.name;
-                document.getElementById('danrajImagePreview').classList.add('active');
-            };
-            reader.readAsDataURL(file);
-        };
-        
-        window.clearParnjalImage = function() {
-            parnjalSelectedImage = null;
-            document.getElementById('parnjalImagePreview').classList.remove('active');
-            document.getElementById('parnjalFileInput').value = '';
-        };
-        
-        window.clearDanrajImage = function() {
-            danrajSelectedImage = null;
-            document.getElementById('danrajImagePreview').classList.remove('active');
-            document.getElementById('danrajFileInput').value = '';
-        };
-        
-        // ========== DELETE ALL MESSAGES ==========
-        window.deleteAllMessages = function() {
-            if (confirm('⚠️ Delete ALL chats permanently?')) {
-                database.ref('messages').remove()
-                    .then(() => {
-                        alert('✅ All messages deleted');
-                        document.getElementById('parnjalMessages').innerHTML = '';
-                        document.getElementById('danrajMessages').innerHTML = '';
-                    });
-            }
-        };
-        
-        // ========== EMOJI PICKER ==========
-        window.toggleParnjalEmoji = function() {
-            alert('Emoji picker coming soon!');
-        };
-        
-        window.toggleDanrajEmoji = function() {
-            alert('Emoji picker coming soon!');
-        };
-        
-        // ========== UTILITY FUNCTIONS ==========
-        function updateConnectionStatus(user, isConnected) {
-            const dotId = user === 'parnjal' ? 'parnjalConnDot' : 'danrajConnDot';
-            const textId = user === 'parnjal' ? 'parnjalConnText' : 'danrajConnText';
-            
-            const dot = document.getElementById(dotId);
-            const text = document.getElementById(textId);
-            
-            if (dot && text) {
-                dot.className = isConnected ? 'connection-dot connected' : 'connection-dot disconnected';
-                text.textContent = isConnected ? 'Connected' : 'Disconnected';
+                lsEl.classList.add('hidden');
             }
         }
-        
-        function formatLastSeen(timestamp) {
-            const diff = Math.floor((Date.now() - timestamp) / 1000);
-            if (diff < 60) return 'just now';
-            if (diff < 3600) return Math.floor(diff/60) + 'm ago';
-            if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
-            return new Date(timestamp).toLocaleDateString();
+    });
+}
+
+// ============================================
+//  TYPING INDICATOR
+// ============================================
+function fireTyping(user) {
+    if (typingTimer) clearTimeout(typingTimer);
+    db.ref(`typing/${ME}_typing`).set({ on: true, ts: Date.now() });
+    typingTimer = setTimeout(() => {
+        db.ref(`typing/${ME}_typing`).set({ on: false });
+    }, 2500);
+}
+
+function watchTyping() {
+    db.ref(`typing/${OTHER}_typing`).on('value', snap => {
+        const t = snap.val();
+        const pfx = ME === 'pranjal' ? 'prn' : 'dnr';
+        const typEl  = document.getElementById(`${pfx}Typing`);
+        const statEl = document.getElementById(`${pfx}Status`);
+
+        if (t?.on && (Date.now() - t.ts < 3500)) {
+            typEl.classList.remove('hidden');
+            statEl.classList.add('hidden');
+        } else {
+            typEl.classList.add('hidden');
+            statEl.classList.remove('hidden');
         }
-        
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight) + 'px';
+    });
+}
+
+// ============================================
+//  SEND MESSAGE
+// ============================================
+function sendMsg(user) {
+    if (user !== ME) return;
+    const inputId = user === 'pranjal' ? 'prnInput' : 'dnrInput';
+    const inp = document.getElementById(inputId);
+    const text = inp.value.trim();
+
+    if (!text && !selectedImage) return;
+
+    if (selectedImage) {
+        uploadAndSend(text);
+    } else {
+        pushMsg({ from: ME, text, type: 'text' });
+    }
+
+    inp.value = '';
+    autoResize(inp);
+    clearTyping();
+    inp.focus();
+}
+
+function pushMsg(data) {
+    db.ref('messages').push({
+        ...data,
+        ts: firebase.database.ServerValue.TIMESTAMP,
+        seen: false
+    });
+}
+
+// ============================================
+//  IMAGE UPLOAD
+// ============================================
+function pickImg(e, user) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 8 * 1024 * 1024) { alert('Image too big! Max 8MB.'); return; }
+    selectedImage = file;
+
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const pfx = user === 'pranjal' ? 'prn' : 'dnr';
+        document.getElementById(`${pfx}Thumb`).src = ev.target.result;
+        document.getElementById(`${pfx}FileName`).textContent = file.name.length > 25 ? file.name.slice(0,25)+'…' : file.name;
+        document.getElementById(`${pfx}ImgBar`).classList.add('show');
+    };
+    reader.readAsDataURL(file);
+}
+
+function uploadAndSend(caption) {
+    const file = selectedImage;
+    const ref  = sto.ref(`imgs/${ME}_${Date.now()}_${file.name}`);
+    ref.put(file)
+        .then(s => s.ref.getDownloadURL())
+        .then(url => {
+            pushMsg({ from: ME, text: caption || '', imageUrl: url, type: 'image' });
+            clearImg(ME);
+        })
+        .catch(() => alert('Image upload failed. Try again.'));
+}
+
+function clearImg(user) {
+    selectedImage = null;
+    const pfx = user === 'pranjal' ? 'prn' : 'dnr';
+    document.getElementById(`${pfx}ImgBar`).classList.remove('show');
+    document.getElementById(`${pfx}Thumb`).src = '';
+    const fid = user === 'pranjal' ? 'prnFileInput' : 'dnrFileInput';
+    document.getElementById(fid).value = '';
+}
+
+// ============================================
+//  LOAD & DISPLAY MESSAGES
+// ============================================
+function loadMessages() {
+    const pfx  = ME === 'pranjal' ? 'prn' : 'dnr';
+    const cont = document.getElementById(`${pfx}Messages`);
+
+    // First load - history
+    db.ref('messages').orderByChild('ts').once('value', snap => {
+        cont.innerHTML = '';
+        loadedMsgIds.clear();
+        const all = snap.val();
+        if (!all) {
+            cont.innerHTML = '<div class="empty-state"><i class="fas fa-comment-dots"></i><br>No messages yet.<br>Send the first one!</div>';
+            return;
         }
-        
-        function escapeHTML(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        window.handleParnjalKeyPress = function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendParnjalMessage();
-            }
-        };
-        
-        window.handleDanrajKeyPress = function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendDanrajMessage();
-            }
-        };
-        
-        window.autoResize = autoResize;
-        
-        // ========== NETWORK STATUS ==========
-        window.addEventListener('online', function() {
-            if (currentUser === 'parnjal') {
-                document.getElementById('parnjalOffline').classList.remove('active');
-                updateConnectionStatus('parnjal', true);
-            } else if (currentUser === 'danraj') {
-                document.getElementById('danrajOffline').classList.remove('active');
-                updateConnectionStatus('danraj', true);
-            }
+        const keys = Object.keys(all).sort((a,b) => all[a].ts - all[b].ts);
+        let lastDate = '';
+        keys.forEach(k => {
+            const m = all[k];
+            if (!isOurMsg(m)) return;
+            const dLabel = getDayLabel(m.ts);
+            if (dLabel !== lastDate) { appendDivider(cont, dLabel); lastDate = dLabel; }
+            appendMsg(cont, m, k);
+            loadedMsgIds.add(k);
         });
-        
-        window.addEventListener('offline', function() {
-            if (currentUser === 'parnjal') {
-                document.getElementById('parnjalOffline').classList.add('active');
-                updateConnectionStatus('parnjal', false);
-            } else if (currentUser === 'danraj') {
-                document.getElementById('danrajOffline').classList.add('active');
-                updateConnectionStatus('danraj', false);
-            }
-        });
-    </script>
+        scrollBottom(cont);
+    });
+
+    // Live new messages
+    db.ref('messages').orderByChild('ts').on('child_added', snap => {
+        const m = snap.val();
+        const k = snap.key;
+        if (!isOurMsg(m) || loadedMsgIds.has(k)) return;
+        loadedMsgIds.add(k);
+
+        // Remove empty state
+        const empty = cont.querySelector('.empty-state');
+        if (empty) empty.remove();
+
+        appendMsg(cont, m, k);
+        scrollBottom(cont);
+
+        // Mark seen
+        if (m.from !== ME) {
+            db.ref(`messages/${k}`).update({ seen: true });
+            // Show badge briefly
+            const badgeId = ME === 'pranjal' ? 'prnBadge' : 'dnrBadge';
+            const badge = document.getElementById(badgeId);
+            badge.classList.remove('hidden');
+            setTimeout(() => badge.classList.add('hidden'), 3000);
+        }
+    });
+}
+
+function isOurMsg(m) {
+    return (m.from === 'pranjal' && !m.from === 'danraj') || true
+        ? (m.from === 'pranjal' || m.from === 'danraj')
+        : false;
+    // Actually: only show msgs between pranjal and danraj (always true in this 2-user app)
+}
+
+function appendDivider(cont, label) {
+    const d = document.createElement('div');
+    d.className = 'date-divider';
+    d.innerHTML = `<span>${label}</span>`;
+    cont.appendChild(d);
+}
+
+function appendMsg(cont, m, k) {
+    const isSent = m.from === ME;
+    const row = document.createElement('div');
+    row.className = `msg-row ${isSent ? 'sent' : 'recv'}`;
+    row.id = `msg-${k}`;
+
+    const senderColor = m.from === 'pranjal' ? '#8b5cf6' : '#10b981';
+    const senderName  = m.from === 'pranjal' ? 'Pranjal' : 'Danraj';
+    const timeStr     = m.ts ? new Date(m.ts).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }) : '';
+
+    let inner = '';
+    if (!isSent) {
+        inner += `<div class="msg-sender-name" style="color:${senderColor}">${senderName}</div>`;
+    }
+    if (m.imageUrl) {
+        inner += `<img src="${m.imageUrl}" class="msg-image" onclick="window.open('${m.imageUrl}','_blank')">`;
+    }
+    if (m.text) {
+        inner += `<div class="msg-text">${escHtml(m.text)}</div>`;
+    }
+    inner += `<div class="msg-meta">
+        <span>${timeStr}</span>
+        ${isSent ? `<span>${m.seen ? '<i class="fas fa-check-double seen-icon"></i>' : '<i class="fas fa-check"></i>'}</span>` : ''}
+    </div>`;
+
+    row.innerHTML = `<div class="msg-bubble">${inner}</div>`;
+    cont.appendChild(row);
+}
+
+function scrollBottom(cont) {
+    setTimeout(() => { cont.scrollTop = cont.scrollHeight; }, 50);
+}
+
+// ============================================
+//  DELETE ALL
+// ============================================
+function deleteAll() {
+    if (!confirm('⚠️ Sabhi messages delete kar dun? Wapas nahi aayenge!')) return;
+    db.ref('messages').remove().then(() => {
+        const pfx = ME === 'pranjal' ? 'prn' : 'dnr';
+        document.getElementById(`${pfx}Messages`).innerHTML =
+            '<div class="empty-state"><i class="fas fa-comment-dots"></i><br>No messages yet.<br>Start fresh!</div>';
+        loadedMsgIds.clear();
+    });
+}
+
+// ============================================
+//  EMOJI PICKER
+// ============================================
+function buildEmojiGrid(user) {
+    const pfx  = user === 'pranjal' ? 'prn' : 'dnr';
+    const grid = document.getElementById(`${pfx}EmojiGrid`);
+    grid.innerHTML = '';
+    EMOJIS.forEach(em => {
+        const sp = document.createElement('span');
+        sp.className = 'emoji-item';
+        sp.textContent = em;
+        sp.onclick = () => insertEmoji(em, user);
+        grid.appendChild(sp);
+    });
+}
+
+function toggleEmoji(user) {
+    const pfx = user === 'pranjal' ? 'prn' : 'dnr';
+    document.getElementById(`${pfx}EmojiWrap`).classList.toggle('show');
+}
+
+function insertEmoji(em, user) {
+    const inputId = user === 'pranjal' ? 'prnInput' : 'dnrInput';
+    const inp = document.getElementById(inputId);
+    const pos = inp.selectionStart;
+    const val = inp.value;
+    inp.value = val.slice(0, pos) + em + val.slice(pos);
+    inp.focus();
+    inp.selectionStart = inp.selectionEnd = pos + em.length;
+    autoResize(inp);
+}
+
+// ============================================
+//  KEYBOARD + UTILS
+// ============================================
+function handleKey(e, user) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMsg(user);
+        // Close emoji on send
+        const pfx = user === 'pranjal' ? 'prn' : 'dnr';
+        document.getElementById(`${pfx}EmojiWrap`).classList.remove('show');
+    }
+}
+
+function clearTyping() {
+    if (typingTimer) clearTimeout(typingTimer);
+    if (ME) db.ref(`typing/${ME}_typing`).set({ on: false });
+}
+
+function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function escHtml(t) {
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+}
+
+function fmtTime(ts) {
+    const diff = Math.floor((Date.now() - ts) / 1000);
+    if (diff < 60)    return 'just now';
+    if (diff < 3600)  return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return new Date(ts).toLocaleDateString();
+}
+
+function getDayLabel(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    const t = new Date();
+    const diff = Math.floor((t - d) / 86400000);
+    if (diff === 0) return 'Today';
+    if (diff === 1) return 'Yesterday';
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+// ============================================
+//  NETWORK EVENTS
+// ============================================
+window.addEventListener('online',  () => { if (ME) setConnected(true);  });
+window.addEventListener('offline', () => { if (ME) setConnected(false); });
+
+// Close emoji on outside click
+document.addEventListener('click', e => {
+    if (ME) {
+        const pfx = ME === 'pranjal' ? 'prn' : 'dnr';
+        const wrap = document.getElementById(`${pfx}EmojiWrap`);
+        const icon = e.target.closest('.fa-smile');
+        if (wrap && !wrap.contains(e.target) && !icon) {
+            wrap.classList.remove('show');
+        }
+    }
+});
+</script>
 </body>
 </html>
